@@ -650,9 +650,14 @@ And the suites, run against that same live URL, after Turso was in the
 deployment:
 
 ```
-23/23 acceptance checks passed
+25/25 acceptance checks passed
 320 / 390 / 768 / 1280 / 1600 —  horizontal overflow 0 px,  failed requests 0
 ```
+
+The suite grew from 23 to 25 because the feedback section now takes its
+*connected* branch — five assertions about the answer box, the six topic
+choices, the optional reply address and the `aria-live` status, in place
+of the three it makes when the form is not connected.
 
 The waitlist, exercised against the live deployment:
 
@@ -667,7 +672,64 @@ The waitlist, exercised against the live deployment:
 And from a browser, on the live site, the hero form answers **"You are on
 the list. We will email you once, when XR is ready."**
 
-### 10.7 Re-measured
+### 10.7 The star count, and the form id
+
+Two things the owner found on the live site, both real, both fixed.
+
+**The stars showed 0. The repository has 6.** The count is read from the
+GitHub API at request time, but the failure was caught and returned as a
+fallback object with `stars: 0` — so "we could not read the number" was
+printed as "the repository has no stars", and the cached fallback held
+that claim for the length of the revalidation window. The fix is not
+"try harder"; it is to stop conflating *unknown* with *zero*:
+
+- an unreachable or rate-limited API returns `null`, and the page shows a
+  **dash**. Zero is a claim about the repository. A dash is a statement
+  about the page.
+- the metadata only carries `github-stars` when the number is real, so no
+  crawler reads a wrong count.
+- the fetch retries once, times out after six seconds, and authenticates
+  when `GITHUB_TOKEN` is set — an unauthenticated request is capped at
+  60 an hour per IP and Vercel's IPs are shared, which is why the limit
+  was being hit at all.
+- `GET /api/github` reports the live count *and* the raw upstream
+  status, so "the site shows the wrong number" and "the API refused"
+  stop looking identical.
+
+Verified on the live deployment: `{"stars": 6, "upstream": {"status":
+200, "rateLimitRemaining": "43"}}`, and the button, the footer and the
+metadata all read **6**.
+
+**The feedback form was not working, and now the site says exactly
+why.** Two values had been set in Vercel:
+
+| Variable | What was set | Verdict |
+|---|---|---|
+| `NEXT_PUBLIC_GOOGLE_FORM_ID` | `1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ` | **Correct.** A real, published form — "XR — what should we build next?" — reachable without a sign-in. |
+| `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | `entry.123456789` | **Wrong.** That is the literal example in the documentation, not a real id. |
+
+The form itself, fetched and read, has **no questions at all** — zero
+`entry.` references on the page. Google therefore answers every
+submission with a **400**, and the answer was being thrown away while
+the page said it was fine.
+
+So two fixes, one of them a fix to my own documentation:
+
+- the route now tells a 400 ("the entry id matches no question — the
+  form has no questions yet, or the entry id is wrong") apart from a 404
+  ("no such form"), with a plain sentence for the visitor and an exact
+  `detail` for whoever is setting the form up;
+- a malformed id is treated as "not connected" rather than as a form that
+  silently loses every answer;
+- the example entry id in every document is replaced with
+  `entry.<the number from the prefilled link>`, which cannot be copied
+  verbatim by accident. The old example was copied verbatim into a live
+  deployment, and that is the entire reason this paragraph exists.
+
+The remaining step is the owner's: add the question in Google, press
+**Send**, and put the real entry id in Vercel.
+
+### 10.8 Re-measured
 
 The new section adds one client component and one API route, and nothing
 on the critical path. Lighthouse, against the production build:
