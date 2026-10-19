@@ -596,7 +596,53 @@ in `DEPLOY.md`. The two that are easy to forget are `NEXT_PUBLIC_SITE_URL`
 at the wrong host — and the waitlist schema, which has to be applied to
 the Turso database once, by hand.
 
-### 10.6 Re-measured
+### 10.6 The owner's own deployment
+
+The owner imported the repository at Vercel and the site is now served
+from their own project:
+
+> **https://xr-landing-eight.vercel.app**
+
+Auto-deployment from `main` is live — pushing a commit redeployed the
+site within about a minute, which is how the canonical-URL fix below was
+verified end to end.
+
+Two things were wrong on that deployment and are now recorded and fixed:
+
+1. **The canonical tag pointed at a domain that is not this site.**
+   `https://xr-landing.vercel.app`, and the footer's link back to the
+   site pointed at `https://xr-gules.vercel.app`. Both now read from
+   `NEXT_PUBLIC_SITE_URL`, with the real deployment as the fallback, so
+   the canonical tag, the Open Graph URL, the Twitter card, the sitemap
+   and the footer link cannot disagree with each other or with where the
+   site is actually served from. Fix: commit `97cc407`.
+2. **The waitlist answered 503.** Turso was not in the environment
+   variables of the deployment — a deployment made before the variables
+   are added cannot see them, so a redeploy is required. The variables
+   and the schema are in `GOOGLE_FORM_SETUP.md`.
+
+Measured against the owner's own deployment:
+
+| | live · mobile simulated | local · mobile simulated | local · desktop |
+|---|---|---|---|
+| **Performance** | **95** | 90 – 91 | **100** |
+| **Accessibility** | **100** | **100** | **100** |
+| **Best Practices** | **100** | **100** | **100** |
+| **SEO** | **100** | **100** | **100** |
+| LCP | 2.7 s | 3.2 s | 0.8 s |
+| CLS | 0.010 | 0.010 | 0 |
+| TBT | 130 ms | 130 – 200 ms | 0 ms |
+
+And the suites, run against that same live URL:
+
+```
+22/23 acceptance checks passed
+  the one failure is the waitlist, because Turso is not in the
+  deployment's environment variables — the site says so plainly
+320 / 390 / 768 / 1280 / 1600 —  horizontal overflow 0 px,  failed requests 0
+```
+
+### 10.7 Re-measured
 
 The new section adds one client component and one API route, and nothing
 on the critical path. Lighthouse, against the production build:
