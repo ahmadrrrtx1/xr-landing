@@ -1,0 +1,245 @@
+$ skills list
+
+  Loaded skill records (80)
+  ───────────────────────────
+bundled on disk: 65 bundled (54 with an xr-skill.json manifest, 11 legacy markdown)
+  academic_research v1.0.0 enabled healthy xr-manifest [executable]
+    Academic Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusions.
+    research  #academic #literature #citations #methodology
+  api_design v1.0.0 enabled healthy legacy-markdown [executable]
+    api_design professional XR skill
+    developer  
+  architecture_reviewer v1.0.0 enabled healthy xr-manifest [executable]
+    Architecture Reviewer delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #architecture #review #systems #tradeoffs
+  brand_designer v1.0.0 enabled healthy xr-manifest [executable]
+    Brand Designer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #brand #identity #voice #positioning
+  code_auditor v1.0.0 enabled healthy xr-manifest [executable]
+    Code Auditor delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling.
+    security  #code-audit #secure-code #review #sast
+  competitive_intelligence v1.0.0 enabled healthy xr-manifest [executable]
+    Competitive Intelligence delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusions.
+    research  #competitors #positioning #pricing #strategy
+  content_creator v1.0.0 enabled healthy xr-manifest [executable]
+    Content Creator delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #content #calendar #audience #distribution
+  copywriter v1.0.0 enabled healthy xr-manifest [executable]
+    Copywriter delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #copy #conversion #voice #messaging
+  crm_assistant v1.0.0 enabled healthy xr-manifest [executable]
+    CRM Assistant delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #crm #customer #pipeline #ops
+  customer_support v1.0.0 enabled healthy xr-manifest [executable]
+    Customer Support delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #support #ticket #customer #service
+  daily-brief v1.0.0 enabled healthy legacy-markdown [executable]
+    daily-brief professional XR skill
+    developer  
+  db_migrate v1.0.0 enabled healthy legacy-markdown [executable]
+    db_migrate professional XR skill
+    developer  
+  debug_error v1.0.0 enabled healthy legacy-markdown [executable]
+    debug_error professional XR skill
+    developer  
+  debugging_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Debugging Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #debugging #root-cause #observability #triage
+  deep_research v1.0.0 enabled healthy xr-manifest [executable]
+    Deep Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusions.
+    research  #research #synthesis #sources #analysis
+  devops_engineer v1.0.0 enabled healthy xr-manifest [executable]
+    DevOps Engineer delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #ci-cd #infra #observability #devops
+  docker_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Docker Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #docker #containers #deployment #devops
+  email_writer v1.0.0 enabled healthy xr-manifest [executable]
+    Email Writer delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #email #communication #copy #outreach
+  explain_codebase v1.0.0 enabled healthy legacy-markdown [executable]
+    explain_codebase professional XR skill
+    developer  
+  financial_analyst v1.0.0 enabled healthy xr-manifest [executable]
+    Financial Analyst delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #finance #modeling #metrics #analysis
+  full_stack_engineer v1.0.0 enabled healthy xr-manifest [executable]
+    Full Stack Engineer delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #architecture #frontend #backend #delivery
+  generate_readme v1.0.0 enabled healthy legacy-markdown [executable]
+    generate_readme professional XR skill
+    developer  
+  git_commit_message v1.0.0 enabled healthy legacy-markdown [executable]
+    git_commit_message professional XR skill
+    developer  
+  git_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Git Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #git #branching #history #review
+  go_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Go Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #go #services #concurrency #backend
+  incident_response v1.0.0 enabled healthy xr-manifest [executable]
+    Incident Response delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling.
+    security  #incident #forensics #containment #eradication
+  java_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Java Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #java #spring #enterprise #backend
+  kubernetes_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Kubernetes Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #kubernetes #cluster #helm #devops
+  logo_designer v1.0.0 enabled healthy xr-manifest [executable]
+    Logo Designer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #logo #identity #brand #visual
+  malware_analyst v1.0.0 enabled healthy xr-manifest [executable]
+    Malware Analyst delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling.
+    security  #malware #reverse-engineering #ioc #analysis
+  market_research v1.0.0 enabled healthy xr-manifest [executable]
+    Market Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusions.
+    research  #market #customers #segments #tam
+  marketing_strategist v1.0.0 enabled healthy xr-manifest [executable]
+    Marketing Strategist delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #marketing #positioning #campaigns #growth
+  negotiation_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Negotiation Expert delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #negotiation #deals #pricing #communication
+  nextjs_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Next.js Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #nextjs #app-router #vercel #frontend
+  node_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Node Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #node #api #typescript #backend
+  osint_researcher v1.0.0 enabled healthy xr-manifest [executable]
+    OSINT Researcher delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling.
+    security  #osint #investigation #sources #attribution
+  paper_analyzer v1.0.0 enabled healthy xr-manifest [executable]
+    Paper Analyzer delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusions.
+    research  #papers #methods #results #critique
+  patent_research v1.0.0 enabled healthy xr-manifest [executable]
+    Patent Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusions.
+    research  #patents #prior-art #claims #ip
+  pentest_assistant v1.0.0 enabled healthy xr-manifest [executable]
+    Pentest Assistant delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling.
+    security  #pentest #authorized #vulnerability #reporting
+  performance_optimizer v1.0.0 enabled healthy xr-manifest [executable]
+    Performance Optimizer delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #performance #profiling #latency #scaling
+  pr_description v1.0.0 enabled healthy legacy-markdown [executable]
+    pr_description professional XR skill
+    developer  
+  presentation_builder v1.0.0 enabled healthy xr-manifest [executable]
+    Presentation Builder delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #slides #presentation #story #executive
+  privacy_advisor v1.0.0 enabled healthy xr-manifest [executable]
+    Privacy Advisor delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling.
+    security  #privacy #data-protection #policy #compliance
+  product_manager v1.0.0 enabled healthy xr-manifest [executable]
+    Product Manager delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #product #roadmap #requirements #prioritization
+  project_manager v1.0.0 enabled healthy xr-manifest [executable]
+    Project Manager delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #project #planning #risk #delivery
+  proposal_writer v1.0.0 enabled healthy xr-manifest [executable]
+    Proposal Writer delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #proposal #rfp #sales #business
+  python_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Python Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #python #automation #data #backend
+  react_expert v1.0.0 enabled healthy xr-manifest [executable]
+    React Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #react #components #state #frontend
+  refactor_clean v1.0.0 enabled healthy legacy-markdown [executable]
+    refactor_clean professional XR skill
+    developer  
+  refactoring_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Refactoring Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #refactor #clean-code #maintainability #design
+  research:academic v1.0.0 enabled healthy research-pack [executable]
+    Academic source discovery, paper analysis, citation-aware synthesis, and uncertainty tracking.
+    research  #research #pack #substrate
+  research:deep v1.0.0 enabled healthy research-pack [executable]
+    Plan, search, rank, synthesize, and report research through XR's Research Engine.
+    research  #research #pack #substrate
+  research:market v1.0.0 enabled healthy research-pack [executable]
+    Market, competitor, segment, and positioning research using XR's Research Engine.
+    research  #research #pack #substrate
+  role:builder v1.0.0 enabled healthy role-pack [executable]
+    Implements approved repository changes inside the current workspace.
+    agent  #role #builder #code-writing #refactoring #test-driving
+  role:executor v1.0.0 enabled healthy role-pack [executable]
+    Runs approved execution tasks with the narrowest possible side-effect scope.
+    agent  #role #executor #approved-execution #computer-control #controlled-side-effects
+  role:memory-manager v1.0.0 enabled healthy role-pack [executable]
+    Prepares scoped memory packages and prevents broad memory bleed between workers.
+    agent  #role #memory_manager #memory-briefing #scope-control #recall-packaging
+  role:model-selector v1.0.0 enabled healthy role-pack [executable]
+    Chooses provider/model strategy per agent role when overrides are useful.
+    agent  #role #model_selector #provider-routing #cost-awareness #role-specific-model-picks
+  role:planner v1.0.0 enabled healthy role-pack [executable]
+    Converts the assigned objective into an explicit plan and execution checklist.
+    agent  #role #planner #task-decomposition #dependency-mapping #risk-surfacing
+  role:researcher v1.0.0 enabled healthy role-pack [executable]
+    Collects evidence, repo context, ecosystem facts, and counterpoints.
+    agent  #role #researcher #evidence-gathering #repo-reading #counter-analysis
+  role:reviewer v1.0.0 enabled healthy role-pack [executable]
+    Separates critique from generation and can request changes before merge/synthesis.
+    agent  #role #reviewer #quality-review #logic-check #change-requests
+  role:router v1.0.0 enabled healthy role-pack [executable]
+    Routes the workflow to the right built-in agent roles and determines task kind.
+    agent  #role #router #workflow-kind-detection #agent-selection
+  role:security-checker v1.0.0 enabled healthy role-pack [executable]
+    Performs deterministic and model-assisted safety review before risky execution proceeds.
+    agent  #role #security_checker #policy-check #prompt-injection-screen #execution-blocking
+  role:supervisor v1.0.0 enabled healthy role-pack [executable]
+    Owns workflow state, delegation, blocking, review gates, and final completion.
+    agent  #role #supervisor #task-routing #handoff-control #review-gates #resume-cancel #audit
+  role:synthesizer v1.0.0 enabled healthy role-pack [executable]
+    Combines reviewed worker outputs into the final user-facing answer.
+    agent  #role #synthesizer #result-composition #summary #final-delivery
+  role:verifier v1.0.0 enabled healthy role-pack [executable]
+    Inspects the ACTUAL artifacts (files, outputs, hashes) a mission produced and decides whether they satisfy the objective. Read-only by capability, not by prompt.
+    agent  #role #verifier #artifact-inspection #verdict #read-only
+  rust_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Rust Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #rust #systems #performance #safety
+  sales_agent v1.0.0 enabled healthy xr-manifest [executable]
+    Sales Agent delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #sales #pipeline #outreach #qualification
+  scientific_research v1.0.0 enabled healthy xr-manifest [executable]
+    Scientific Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusions.
+    research  #science #hypothesis #evidence #experiment
+  security_audit v1.0.0 enabled healthy legacy-markdown [executable]
+    security_audit professional XR skill
+    developer  
+  seo_expert v1.0.0 enabled healthy xr-manifest [executable]
+    SEO Expert delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #seo #content #technical-seo #search
+  soc_analyst v1.0.0 enabled healthy xr-manifest [executable]
+    SOC Analyst delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling.
+    security  #soc #alerts #siem #triage
+  social_media_creator v1.0.0 enabled healthy xr-manifest [executable]
+    Social Media Creator delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #social #posts #platforms #engagement
+  startup_advisor v1.0.0 enabled healthy xr-manifest [executable]
+    Startup Advisor delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+    business  #startup #strategy #fundraising #gtm
+  story_writer v1.0.0 enabled healthy xr-manifest [executable]
+    Story Writer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #story #narrative #characters #editing
+  testing_expert v1.0.0 enabled healthy xr-manifest [executable]
+    Testing Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awareness.
+    developer  #tests #qa #coverage #automation
+  threat_hunter v1.0.0 enabled healthy xr-manifest [executable]
+    Threat Hunter delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling.
+    security  #threat-hunting #detection #logs #security
+  ui_designer v1.0.0 enabled healthy xr-manifest [executable]
+    UI Designer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #ui #visual-design #interfaces #design-system
+  ux_designer v1.0.0 enabled healthy xr-manifest [executable]
+    UX Designer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #ux #research #flows #usability
+  video_script_writer v1.0.0 enabled healthy xr-manifest [executable]
+    Video Script Writer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality.
+    creative  #video #script #storyboard #content
+  write_tests v1.0.0 enabled healthy legacy-markdown [executable]
+    write_tests professional XR skill
+    developer  

@@ -1,0 +1,58 @@
+Script started on 2026-10-18 17:48:04+00:00 [COMMAND="bash /tmp/task.sh" <not executed on terminal>]
+[38;2;0;212;255m$[0m [1mxr "Read the package.json in this repo and tell me what XR is, in two sentences."[0m
+[2m› Dry run: workspace writes and shell execution are simulated; model, read and network requests may still run.[22m
+[2K[36m⠙[39m [2mThinking…[22m[2K[36m⠹[39m [2mThinking…[22m[2K[36m⠸[39m [2mThinking…[22m[2K[2mls /home/user/xr[22m
+[2mread package.json[22m
+XR is a local‑first, provider‑neutral AI agent runtime that lets you run intelligent agents on your own hardware. It supports Bring‑Your‑Own‑Key (BYOK), spend‑capped usage, tamper‑evident audit logs, and extensibility via plugins and a modular component platform.
+[32m✓[39m [2mdry-run (simulated) · 0 files changed · 0 commands run · 4.3k tok (no price data) / $2 cap[22m
+
+Script done on 2026-10-18 17:48:06+00:00 [COMMAND_EXIT_CODE="0"]
+Script started on 2026-10-18 17:48:06+00:00 [COMMAND="bash /tmp/local.sh" <not executed on terminal>]
+
+[38;2;0;212;255m$[0m [1mxr audit verify[0m
+
+  [38;2;0;212;255m▀▄▀ █▀█[0m  [1mXR[0m [36m—[0m [1mThe AI Agent You Can Actually Trust[0m
+  [38;2;0;212;255m█░█ █▀▄[0m  [2mby @rrrtx · local-first · BYOK · spend-capped · secure[0m
+
+  [32m✓[0m [1m[32mAudit chain intact[0m[0m
+  [2m260 entries verified · SHA-256 hash chain[0m
+  [36m›[0m [2mAdd --crypto to verify Ed25519 signatures (tamper-RESISTANT), not just the hash chain.[0m
+
+
+[38;2;0;212;255m$[0m [1mxr budget[0m
+
+  [38;2;0;212;255m▀▄▀ █▀█[0m  [1mXR[0m [36m—[0m [1mThe AI Agent You Can Actually Trust[0m
+  [38;2;0;212;255m█░█ █▀▄[0m  [2mby @rrrtx · local-first · BYOK · spend-capped · secure[0m
+
+  [33m◈[0m  [1mBudget[0m
+  [2m────────────────────────────────────────[0m
+  Monthly cap ...... [32m$20.00[0m
+  Monthly spend .... [2m$0.0000[0m
+  Remaining ........ [36m$20.0000[0m
+  Usage ............ [32m0.0%[0m
+  Daily cap ........ [32m$5.00[0m
+  Daily spend ...... [2m$0.0000[0m
+
+  Auto-fallback .... [32menabled[0m
+  Warnings ......... [32menabled[0m
+
+  [36m›[0m [2mPer-task hard cap: xr "task" --budget 0.25[0m
+
+
+[38;2;0;212;255m$[0m [1mxr providers list[0m
+
+  [38;2;0;212;255m▀▄▀ █▀█[0m  XR — The AI Agent You Can Actually Trust
+  [38;2;0;212;255m█░█ █▀▄[0m  by @rrrtx · local-first · BYOK · spend-capped · secure
+
+Providers
+  Active: groq (openai/gpt-oss-20b)
+  Routing: hybrid
+
+Built-in Providers
+    ollama       🏠 🆓  no key
+     Ollama (Local)  [chat, tool-use, json-mode, streaming]
+    lmstudio     🏠 🆓  no key
+     LM Studio (Local)  [chat, tool-use, json-mode, streaming]
+    llamacpp     🏠 🆓  no key
+
+Script done on 2026-10-18 17:48:06+00:00 [COMMAND_EXIT_CODE="0"]

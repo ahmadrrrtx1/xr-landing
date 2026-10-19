@@ -1,0 +1,14 @@
+{
+  "name": "XR — The AI Agent You Can Actually Trust",
+  "short_name": "XR",
+  "description": "A local-first, provider-neutral AI agent runtime. BYOK, spend-capped, tamper-evident audit, plugin/MCP extensibility.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#03070D",
+  "theme_color": "#03070D",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

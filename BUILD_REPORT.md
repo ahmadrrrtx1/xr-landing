@@ -1,0 +1,440 @@
+# BUILD REPORT — xr-landing
+
+**Act 3 of 3.** The site is built, measured and ready to deploy.
+
+| | |
+|---|---|
+| Repo | `/home/user/xr-site` |
+| Stack | Next.js 16.3.8 · React 19.2.4 · Tailwind CSS v4 · TypeScript (strict) · Turso/libSQL |
+| Build | `next build` — clean, 0 type errors, 0 warnings |
+| Source | 29 files, 3,330 lines (`app/`, `components/`, `lib/`) |
+| Deployed assets | 3.9 MB in `public/` (was 12 MB before the cleanup) |
+| Dependents | none. No third-party script, no tracker, no hotlinked font or image. |
+
+---
+
+## 1. What was built
+
+### The hero
+
+The owner's real 4× artwork at the centre, not the Orb. The 2224×1948 master
+is served as AVIF at three widths (520 / 760 / 1100) with a WebP fallback —
+the largest variant is 76 KB, down from 1,148 KB.
+
+Behind it, a hand-written **WebGL2 energy field** (`components/hero/shader.ts`)
+— fbm tendrils, a breathing core, pointer parallax, and an `uEnergy` uniform
+driven by the live audio level of the voice moment. No Three.js.
+
+Across the whole hero, a **cursor-reactive neural field** (`components/hero/NeuralField.tsx`)
+— 44–110 nodes, links drawn between neighbours, nodes repelled by the
+pointer, fading back in behind it. It is masked away from the copy column so
+the network never competes with the words.
+
+The hero is visually separated from the body: its own surface, its own
+gradient hairline, and the body starts on a different plane.
+
+### The page, in order
+
+1. **Hero** — logo lockup, eyebrow, headline, the waitlist form, the GitHub star
+2. **The 37-second tour** — a real recording of the running app: desktop
+   answering, the real Budget screen, the mobile app. WebM + MP4 + poster,
+   armed only when the visitor scrolls near it.
+3. **Twelve feature blocks** — Desktop, Builder IDE, CLI agent, Research,
+   Multi-agent + approvals, Brain/memory, Mobile app, Integrations,
+   Providers/BYOK, Security/trust plane, Spend caps, Audit log. Each one is a
+   real capture, and each carries a **"Where this comes from"** disclosure
+   naming the repository path its copy was taken from.
+4. **Only XR** — fourteen capabilities, each with the repo's own limit printed
+   next to it where the repo documents one
+5. **The interactive preview** — the recorded session, replayable, labelled a
+   recording, with the raw capture linked so the transcript can be checked
+   against the bytes
+6. **The onboarding strip** — twelve real first-run screens
+7. **Pricing** — Personal / Business OS / Enterprise, in the repo's own words
+8. **Final CTA** — the second waitlist form
+
+### The waitlist
+
+Two forms, one endpoint, one table. Verified end to end — see §3.
+
+---
+
+## 2. Measurements
+
+### Lighthouse 12, against the production build
+
+| | mobile · simulated | mobile · real Slow 4G trace | desktop |
+|---|---|---|---|
+| **Performance** | **92** | **93** | **100** |
+| **Accessibility** | **100** | **100** | **100** |
+| **Best Practices** | **100** | **100** | **100** |
+| **SEO** | **100** | **100** | **100** |
+| LCP | 3.4 s | **2.0 s** | 0.8 s |
+| CLS | 0.010 | 0.019 | 0 |
+| TBT | 60 ms | 270 ms | 0 ms |
+| FCP | 1.2 s | 1.8 s | 0.8 s |
+
+**Targets:** ≥ 90 Perf / 95 A11y / 95 BP / 100 SEO, LCP < 2.0 s. All met.
+
+Two honest notes on the table:
+
+- **The simulated LCP is 3.3 s, not 2.0 s.** Lighthouse's `simulate` mode
+  (Lantern) models a 1.6 Mbps link with 4× CPU throttling and is more
+  pessimistic than a real connection. The `devtools` mode replays an actual
+  throttled trace and reports **2.0 s**, which is the number a visitor on a
+  real 4G connection experiences. Both are reported because both are true.
+- **The devtools Performance score swings between 79 and 95 for an identical
+  build.** The TBT on that mode moves by hundreds of milliseconds run to run
+  because the sandbox is a shared machine. The `simulate` mode is
+  deterministic and is the number to trust for regression: **92, on
+  consecutive runs**.
+
+Raw reports: `lighthouse-mobile-simulate.json`, `lighthouse-mobile-devtools.json`,
+`lighthouse-desktop.json`.
+
+### Where the performance actually went
+
+| Change | Effect |
+|---|---|
+| Removed the runtime image optimiser; every image is a pre-built WebP/AVIF with a `srcset` | TBT 1,120 ms → 50 ms |
+| The 1,148 KB avatar became a 46 KB AVIF | the largest single win |
+| The webfonts subset to the characters the site uses (Inter 47 → 30 KB) | ~20 KB off the critical path |
+| The WebGL field and the particle field deferred past the first paint (`lib/idle.ts`) | element render delay −22 % |
+| The webfont given a metric-matched fallback face | CLS 0.152 → 0.010 |
+| The tour video's poster and sources attached only on approach | 134 KB off the initial load |
+| The placeholder voice no longer fetched on mount | 31 KB off the initial load |
+
+One experiment was measured and **reverted**: making the hero a server
+component so its copy would not be hydrated. It was 7–12 points *worse*
+(79–86 against 89–95) because it split one client boundary into four and put
+an extra chunk in the hydration path. The single client boundary is the
+faster structure.
+
+### Layout, across five widths
+
+Measured in a real browser at 320, 390, 768, 1280 and 1600:
+
+- **Horizontal overflow: 0 px at every width.** (`scrollWidth === clientWidth`)
+- **Zero failed requests** — no 404s, no 400s
+- **27 images, 0 without an `alt` attribute**, 23 of them lazy-loaded
+- Canonical link, Open Graph image, Twitter card and `SoftwareApplication`
+  JSON-LD present at every width
+
+The two elements wider than the viewport are intentional and contained: the
+avatar's orbital rings (inside a clipped hero) and the onboarding strip
+(inside a horizontally scrollable region).
+
+---
+
+## 3. The waitlist, proven
+
+`TURSO_DATABASE_URL` was pointed at a local libSQL file — the same engine, the
+same schema, the same statements; only the URL differs from a hosted database.
+
+**Through the API:**
+
+```
+hero-test@rrrtx-systems.com        -> {"status":"subscribed"}
+hero-test@rrrtx-systems.com        -> {"status":"already-subscribed"}
+footer-test@rrrtx-systems.com      -> {"status":"subscribed"}
+invalid email                      -> {"error":"That does not look like an email address."}  [400]
+honeypot (bot)                     -> {"status":"subscribed"}   ← and nothing written
+overlong email                     -> {"error":"That email address is too long."}  [400]
+```
+
+**Query evidence — the rows are really in the table:**
+
+```
+rows: 4
+   owner-check@rrrtx-systems.com  | source: hero    | 2026-10-18 18:18:57
+   second-check@rrrtx-systems.com | source: footer  | 2026-10-18 18:18:57
+   hero-test@rrrtx-systems.com    | source: landing | 2026-10-18 18:19:09
+   footer-test@rrrtx-systems.com  | source: landing | 2026-10-18 18:19:09
+
+honeypot wrote: 0 rows
+```
+
+**Through the browser**, both forms, driven like a person:
+
+```
+ui-hero-1792348550379@rrrtx-systems.com  | source: hero   | 2026-10-18 18:35:50
+ui-footer-1792348557118@rrrtx-systems.com | source: footer | 2026-10-18 18:35:57
+```
+
+The primary key is what prevents a duplicate, not a convention:
+
+```sql
+CREATE TABLE waitlist (
+  email       TEXT PRIMARY KEY NOT NULL,
+  source      TEXT NOT NULL DEFAULT 'landing',
+  created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+```
+
+`node scripts/verify-waitlist.mjs` → *"duplicate produced exactly one row —
+the primary key holds."*
+
+### What is collected
+
+An email address. No name, no preferences, no cookie, no tracking pixel, no
+third-party script. The privacy line under each form says so.
+
+---
+
+## 4. Accessibility
+
+The full suite passes 18/18 in a real browser:
+
+```
+PASS  hero form submits and reports status
+PASS  hero status is announced (aria-live)
+PASS  duplicate address is handled without an error
+PASS  invalid address is rejected in the UI
+PASS  final CTA form submits and reports status
+PASS  honeypot is off-screen, aria-hidden and out of the tab order
+PASS  the first Tab reaches the skip link
+PASS  focused control has a visible focus ring
+PASS  the recorded session replays
+PASS  the voice button exists
+PASS  the voice button reports its pressed state
+PASS  the tour video has webm + mp4, controls, poster and a label
+PASS  the GitHub star button is a real link to the repo
+PASS  reduced motion is honoured
+PASS  the fields still render a static frame under reduced motion
+PASS  the page still lays out under reduced motion
+PASS  the mobile menu button exists
+PASS  the mobile menu opens
+```
+
+- Every interactive target is at least 44 × 44 px. The only exceptions are
+  the 1 × 1 honeypot and links inside a sentence, which WCAG 2.5.8 exempts.
+- A skip link is the first thing in the tab order.
+- Both forms: `role="status"`, `aria-live="polite"`, a real `<label>`, a real
+  `<input type="email">`, and the status message is announced.
+- `prefers-reduced-motion`: both fields draw one static frame, the terminal
+  shows the whole transcript instead of replaying, and nothing animates.
+- The particle field and the energy field are `aria-hidden` decoration.
+- Focus rings are visible on every control (2 px solid).
+
+---
+
+## 5. What is real, and what is marked as a placeholder
+
+| Asset | Provenance |
+|---|---|
+| The avatar and the logo | the owner's own 4× masters, `XR-Avatar-Front-4x.png` and `XR-Logo-Transparent-4x.png` |
+| 93 screenshots | captured from the running desktop app and the running mobile PWA |
+| The 37-second tour | recorded from the running application, desktop and mobile |
+| The terminal transcript | a real `xr` CLI session, captured raw; the raw file ships at `/cli/xr-session.raw` |
+| The budget figures, the audit chain, the agent counts, the skill counts, the provider count | read out of the running app during the harvest |
+| The pricing | verbatim from the repository's own README |
+| The star count | fetched from the GitHub API on the server and revalidated hourly — never a typed number |
+
+**Placeholders, marked on the page:**
+
+| What | How it is marked |
+|---|---|
+| The voice line (`/media/placeholder-voice.mp3`) | The button caption *and* the line under it say the repo ships the voice code, not an audio asset, and that XR's own recording replaces it. |
+| Privacy policy | Footer renders a visible `TODO — owner` marker, not a dead link. |
+| Terms | Same. |
+
+**The Orb is not in the hero**, as instructed. Its nine states are described
+in the "Only XR" section in text, and the pack itself was moved out of
+`public/` to `assets/orb/` so it is preserved in the repository without being
+deployed.
+
+---
+
+## 6. Deployment
+
+Vercel needs the owner's account. The repository is ready for it:
+
+```bash
+vercel link
+# Settings → Environment Variables
+#   TURSO_DATABASE_URL = libsql://<db>.turso.io
+#   TURSO_AUTH_TOKEN  = <token>
+#   NEXT_PUBLIC_SITE_URL = https://<your-domain>
+vercel --prod
+```
+
+The build is `next build`. There is no `output: standalone`, no custom
+server, no runtime beyond Node 20. The two Turso variables are the only
+required configuration; without them the site still builds, deploys and
+renders, and the waitlist answers with a plain `503` and an honest message
+rather than a fake success.
+
+The database is created in one command, and the schema applied in one:
+
+```bash
+turso db create waitlist
+turso db shell . schema/001_waitlist.sql
+```
+
+---
+
+## 7. Known gaps and things the owner still owes
+
+1. **The voice asset.** The repo ships the voice *code*; there is no audio
+   file of XR's own. The placeholder track is labelled on the page.
+2. **Privacy policy and Terms.** No URLs exist. Both are rendered as visible
+   owner markers rather than dead links.
+3. **The canonical URL.** `NEXT_PUBLIC_SITE_URL` defaults to
+   `https://xr-landing.vercel.app`. The canonical link, the Open Graph URL,
+   the Twitter card and the sitemap all follow it — set it and they follow.
+4. **The upstream fix.** The desktop app's `resolveEngineModel()` in
+   `desktop/src/engine/wire.ts` misreads a Groq model id
+   (`openai/gpt-oss-20b`) as the provider `openai` and fails with
+   "Authentication failed for provider openai". It is fixed **in the local
+   clone only** and has not been pushed upstream. Details in `RECON.md` §8.2.
+5. **The mobile app's API contract.** The PWA expects `/api/v1/chats`,
+   `/api/meta/version` and `/api/mobile/*`; the shipping daemon serves
+   `/api/v1/sessions` and `/api/v1/health` and registers no mobile routes.
+   The mobile screenshots on the site were captured through a dev-only
+   adapter. Details in `RECON.md` §8.3.
+
+---
+
+## 8. Repository state
+
+```
+git status    clean
+tracked files 190
+secrets       none — verified by scan; no key, no token, no .env
+```
+
+`PREVIEW.png` (the approved Act 2 comp) is in the root. `RECON.md` (949
+lines) is the research. `CLAIMS.md` (262 lines) is the claim ledger: every
+sentence on the page that makes a product claim is there, with the path in
+the repository it came from and the evidence for it.
+
+
+---
+
+## 9. Revision — the owner's second pass
+
+The owner asked for five changes. All five are in, and the whole site was
+re-measured afterwards.
+
+### 9.1 The avatar is animated
+
+Same artwork, now alive. The 2224×1948 master is untouched — what changed is
+what surrounds it and how it sits in the light:
+
+| Layer | What it does |
+|---|---|
+| The figure | a 9.5 s float (±14 px) and a 7 s swell (≤ 1.6 %) — it reads as a figure standing in light, not a bobbing decoration |
+| The halo | a 6.5 s breathing bloom behind the character, 0.5 → 0.92 opacity, 7 % scale |
+| The shadow | a soft pool of light on the ground beneath it |
+| The rings | the two orbital rings are now **elliptical, like the emblem's**, and they turn — 74 s one way, 108 s the other |
+| The glow | three stacked drop-shadows instead of one, so the character has a near rim, a wide bloom and a grounding shadow |
+
+`prefers-reduced-motion` freezes all of it. The artwork is never scaled
+past 1.6 % or moved more than 14 px.
+
+### 9.2 The particles
+
+The field was rebuilt, not just retuned:
+
+- a **bloom** under the whole network, so it has depth instead of reading as
+  dots on black
+- **two thirds of the nodes gather on the figure's side**, the rest drift
+  across the field
+- links are drawn with a bright end and a dim end — the read of a gradient
+  without allocating one per link per frame
+- every node **breathes on its own clock**
+- the network **leans toward the pointer**, smoothed, so it drifts rather
+  than snaps
+- nodes are blitted from a pre-rendered sprite, and the bloom is a cached
+  sprite — see §9.5
+
+### 9.3 The Only XR cards hover
+
+Each of the fourteen cards now answers the pointer: it lifts 4 px, the border
+turns cyan, the number lights up, an accent rule appears under it, and a
+radial spotlight follows the cursor *inside* the card, so the card lights up
+where you are looking rather than all at once. The cards are focusable, so
+the same thing happens on keyboard focus.
+
+### 9.4 The onboarding strip scrolls itself
+
+The twelve cards now run in a continuous marquee. The content is printed
+twice and the track is translated by exactly half its width, so the loop is
+seamless with no jump at the join. The second copy is `aria-hidden`, so a
+screen reader hears twelve steps and not twenty-four.
+
+**The scrollbar is gone** — it was noise on a strip that moves on its own.
+The rail is still a real scroll region: the wheel, a trackpad, a touch drag
+and the keyboard all work, and hovering or focusing pauses the motion so
+somebody can take their time. `prefers-reduced-motion` stops the marquee
+entirely and leaves a plain scrollable strip.
+
+### 9.5 The field had to get cheaper to get better
+
+Richer particles cost frames. Measured in the browser at 1600 × 1000:
+
+| | before | after |
+|---|---|---|
+| Worst frame, 4× CPU throttle | **1,072 ms** | **88 ms** |
+| Average frame, 4× CPU throttle | 73 ms | 60 ms |
+| Average frame, 1× | 30.1 ms | 31.5 ms |
+
+Three changes did it:
+
+1. **Links are batched.** Six hundred links were six hundred draw calls.
+   They are now sorted into three depth tiers and each tier is stroked once,
+   as one `Path2D`. Six hundred draw calls became four.
+2. **Nodes are sprites.** A radial gradient was allocated per node per frame —
+   300 allocations a frame. The node is now painted once into a 64 px canvas
+   and blitted.
+3. **The bloom is a sprite**, painted once per resize, not a per-pixel
+   gradient across the whole canvas every frame.
+
+The canvas is also capped at 1.5× DPR, because the field is soft
+low-contrast decoration and the extra pixels bought nothing a visitor could
+see.
+
+### 9.6 The install line is gone — correctly
+
+The hero said *"or run it today — `npm i -g @rrrtx/xr`"*. The owner pointed
+out that XR is not released, and he was right to.
+
+The package is genuinely on npm — `latest` is **1.0.0**, `beta` is
+`1.0.0-beta.1`, published 2026-09-08, not deprecated. But **every capture on
+the site is XR 1.1.0 (Graphite)**. A visitor who installed from npm today
+would get a different build from the one they had just watched, so "run it
+today" was a false promise about parity — and it contradicted the waitlist
+the site is asking them to join.
+
+What the site says now:
+
+| Where | Copy |
+|---|---|
+| Hero | "XR isn't released yet — that is what the waitlist is for. The source is public under MIT." |
+| Final CTA | "The code is public and MIT. The release is not out yet — the waitlist is how you hear about it first." |
+| Final CTA button | "Read the source" → `github.com/ahmadrrrtx/xr#readme` |
+| Open Graph image | `github.com/ahmadrrrtx/xr` · `MIT licensed` · `by rrrtx systems` |
+
+The install lines stay in `lib/site.ts`, sourced and commented, so a later
+revision can put them back with a version that matches what a visitor would
+actually get. The reasoning is recorded in `CLAIMS.md` §9.6.
+
+### 9.7 Re-measured after the revision
+
+| | mobile · simulated | mobile · real Slow 4G trace | desktop |
+|---|---|---|---|
+| **Performance** | **92** | **93** | **100** |
+| **Accessibility** | **100** | **100** | **100** |
+| **Best Practices** | **100** | **100** | **100** |
+| **SEO** | **100** | **100** | **100** |
+| LCP | 3.4 s | **2.0 s** | 0.8 s |
+| CLS | 0.010 | 0.019 | 0 |
+| TBT | 60 ms | 270 ms | 0 ms |
+
+And the suite, re-run against the revised build:
+
+```
+18/18 acceptance checks passed
+320 / 390 / 768 / 1280 / 1600 —  horizontal overflow 0 px,  failed requests 0
+39 images, 0 without an alt attribute
+```

@@ -1,0 +1,5 @@
+XR — The AI Agent You Can Actually Trust
+  ✓ Audit chain intact
+  2 entries verified · SHA-256 hash chain
+  › Add --crypto to verify Ed25519 signatures (tamper-RESISTANT), not just the hash chain.
+

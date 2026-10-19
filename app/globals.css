@@ -1,0 +1,414 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   XR Native — the product's own dark theme, lifted verbatim from
+   `desktop/src/styles/themes.css` (the `--theme-xr` block).
+   The landing page inherits the product's tokens rather than
+   imposing a new brand on it.
+   ───────────────────────────────────────────────────────────── */
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* A metric-matched fallback for Inter. The numbers are Inter's own
+   vertical metrics (ascent 0.9688, descent 0.2412, gap 0) expressed
+   against Arial's (0.9053 / 0.2119 / 0.0327), so the text occupies
+   exactly the same space before the webfont arrives as it does after.
+   Without this, the swap moves every line on the page and the
+   cumulative layout shift climbs. */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Roboto");
+  size-adjust: 108.306%;
+  ascent-override: 98.806%;
+  descent-override: 105.104%;
+  line-gap-override: 0%;
+}
+
+/* The same trick for the mono face (JetBrains Mono: 1.02 / 0.30 / 0
+   against Courier New's 0.8325 / 0.3003 / 0). */
+@font-face {
+  font-family: "JetBrains Mono Fallback";
+  src: local("Courier New"), local("Nimbus Mono PS"), local("DejaVu Sans Mono"),
+    local("Liberation Mono");
+  size-adjust: 116.534%;
+  ascent-override: 105.134%;
+  descent-override: 85.734%;
+  line-gap-override: 0%;
+}
+
+@theme {
+  --color-void: #03070d;
+  --color-ink: #0a0f1a;
+  --color-raised: #121826;
+  --color-glass: rgba(10, 15, 26, 0.92);
+
+  --color-line-subtle: rgba(183, 194, 207, 0.08);
+  --color-line: rgba(183, 194, 207, 0.16);
+  --color-line-accent: rgba(0, 229, 255, 0.4);
+
+  --color-primary: #f0f4f8;
+  --color-secondary: #9aa8ba;
+  --color-tertiary: #7d8ca3;
+
+  --color-accent: #00e5ff;
+  --color-accent-hover: #33ebff;
+  --color-accent-dim: #008da8;
+  --color-accent-contrast: #02141b;
+
+  --color-metal: #b7c2cf;
+  --color-metal-bright: #e8edf3;
+
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+  --color-wait: #a78bfa;
+
+  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
+  --glow: rgba(0, 229, 255, 0.45);
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-void);
+  /* Never allow a horizontal scrollbar at any width. */
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--color-void);
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+/* Visible focus everywhere, in the product's own accent. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgba(0, 229, 255, 0.28);
+  color: #fff;
+}
+
+/* ── layout helpers ───────────────────────────────────────── */
+
+@utility hairline {
+  border-top: 1px solid var(--color-line-subtle);
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+@utility shell {
+  width: 100%;
+  max-width: 82.5rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+  @media (min-width: 1280px) {
+    padding-inline: 3rem;
+  }
+}
+
+@utility card {
+  background: var(--color-ink);
+  border: 1px solid var(--color-line-subtle);
+  border-radius: 1rem;
+}
+
+@utility glow-ring {
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.35),
+    0 18px 60px -24px rgba(0, 229, 255, 0.7);
+}
+
+/* The gradient word used in headings. */
+@utility text-accent-grad {
+  background: linear-gradient(96deg, #7fe9f7 0%, #00e5ff 44%, #4fa8ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── the product tour ─────────────────────────────────────── */
+
+.tour-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--color-void);
+}
+
+/* ── motion ───────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  /* The onboarding strip stops moving and becomes a plain scroll
+     region. */
+  .marquee-track {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── utilities ───────────────────────────────────────────── */
+
+.sr-only-focusable:not(:focus):not(:focus-within) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Screenshots and phone frames: a subtle inner edge so a dark
+   capture still reads as a distinct object on a dark page. */
+.shot {
+  border: 1px solid var(--color-line-subtle);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--color-ink);
+  box-shadow: 0 30px 70px -44px rgba(0, 0, 0, 0.95);
+}
+
+
+/* The hero's particle field fades out over the copy column so the
+   network never competes with the words. */
+.hero-field {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 34%,
+    rgba(0, 0, 0, 0.35) 48%,
+    #000 66%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 34%,
+    rgba(0, 0, 0, 0.35) 48%,
+    #000 66%,
+    #000 100%
+  );
+}
+
+/* ── the hero avatar ─────────────────────────────────────── */
+
+/* The character is the owner's artwork, unchanged — but it is alive.
+   A slow float, a slow swell, and a halo that breathes with them.
+   The artwork itself is never scaled past 1.8%, never rotated more
+   than a third of a degree, and never moves further than 14px, so it
+   reads as a figure standing in light rather than a floating
+   decoration. */
+
+@keyframes xr-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(0.32deg);
+  }
+}
+
+@keyframes xr-breathe {
+  0%,
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.016, 1.022, 1);
+  }
+}
+
+@keyframes xr-halo {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale3d(1.07, 1.07, 1);
+  }
+}
+
+@keyframes xr-orbit {
+  from {
+    transform: rotate(-19deg);
+  }
+  to {
+    transform: rotate(341deg);
+  }
+}
+
+@keyframes xr-orbit-reverse {
+  from {
+    transform: rotate(341deg);
+  }
+  to {
+    transform: rotate(-19deg);
+  }
+}
+
+.xr-avatar-float {
+  animation: xr-float 9.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform;
+}
+
+.xr-avatar-breathe {
+  animation: xr-breathe 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform;
+}
+
+.xr-halo {
+  animation: xr-halo 6.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform, opacity;
+}
+
+.xr-orbit {
+  animation: xr-orbit 74s linear infinite;
+  will-change: transform;
+}
+
+.xr-orbit-reverse {
+  animation: xr-orbit-reverse 108s linear infinite;
+  will-change: transform;
+}
+
+/* The shadow the character stands in. */
+.xr-shadow-pool {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(0, 170, 220, 0.5) 0%,
+    rgba(0, 120, 170, 0.22) 38%,
+    rgba(0, 0, 0, 0) 72%
+  );
+  filter: blur(10px);
+}
+
+/* ── the Only XR cards ───────────────────────────────────── */
+
+.only-card {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background-color 0.35s ease;
+}
+
+.only-card:hover,
+.only-card:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--color-line-accent);
+  background-color: rgba(0, 229, 255, 0.035);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.28),
+    0 24px 60px -34px rgba(0, 180, 230, 0.75);
+}
+
+.only-card .only-num {
+  transition:
+    color 0.35s ease,
+    text-shadow 0.35s ease;
+}
+
+.only-card:hover .only-num,
+.only-card:focus-within .only-num {
+  color: var(--color-accent);
+  text-shadow: 0 0 18px rgba(0, 229, 255, 0.65);
+}
+
+.only-card .only-rule {
+  transition: background-color 0.35s ease;
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 229, 255, 0.75) 0%,
+    rgba(0, 229, 255, 0) 100%
+  );
+}
+
+.only-card .only-title {
+  transition: color 0.35s ease;
+}
+
+/* ── the onboarding strip ───────────────────────────────── */
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: xr-marquee 68s linear infinite;
+}
+
+.marquee-track:hover,
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+@keyframes xr-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* The strip scrolls itself; the scrollbar is noise. It is still
+   scrollable with a wheel, a trackpad, a touch drag and the
+   keyboard. */
+.marquee-rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.marquee-rail::-webkit-scrollbar {
+  display: none;
+}

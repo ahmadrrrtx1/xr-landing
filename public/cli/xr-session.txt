@@ -1,0 +1,50 @@
+$ xr "Read the package.json in this repo and tell me what XR is, in two sentences."
+› Dry run: workspace writes and shell execution are simulated; model, read and network requests may still run.
+⠙ Thinking…
+read package.json
+XR is a local‑first, provider‑neutral AI agent runtime that lets you run intelligent agents on your own hardware. It supports Bring‑Your‑Own‑Key (BYOK), spend‑capped usage, tamper‑evident audit logs, and extensibility via plugins and a modular component platform.
+✓ dry-run (simulated) · 0 files changed · 0 commands run · 4.3k tok (no price data) / $2 cap
+
+$ xr audit verify
+
+  ▀▄▀ █▀█  XR — The AI Agent You Can Actually Trust
+  █░█ █▀▄  by @rrrtx · local-first · BYOK · spend-capped · secure
+
+  ✓ Audit chain intact
+  260 entries verified · SHA-256 hash chain
+  › Add --crypto to verify Ed25519 signatures (tamper-RESISTANT), not just the hash chain.
+
+$ xr budget
+
+  ▀▄▀ █▀█  XR — The AI Agent You Can Actually Trust
+  █░█ █▀▄  by @rrrtx · local-first · BYOK · spend-capped · secure
+
+  ◈  Budget
+  ────────────────────────────────────────
+  Monthly cap ...... $20.00
+  Monthly spend .... $0.0000
+  Remaining ........ $20.0000
+  Usage ............ 0.0%
+  Daily cap ........ $5.00
+  Daily spend ...... $0.0000
+
+  Auto-fallback .... enabled
+  Warnings ......... enabled
+
+  › Per-task hard cap: xr "task" --budget 0.25
+
+$ xr providers list
+
+  ▀▄▀ █▀█  XR — The AI Agent You Can Actually Trust
+  █░█ █▀▄  by @rrrtx · local-first · BYOK · spend-capped · secure
+
+Providers
+  Active: groq (openai/gpt-oss-20b)
+  Routing: hybrid
+
+Built-in Providers
+    ollama       🏠 🆓  no key
+     Ollama (Local)  [chat, tool-use, json-mode, streaming]
+    lmstudio     🏠 🆓  no key
+     LM Studio (Local)  [chat, tool-use, json-mode, streaming]
+    llamacpp     🏠 🆓  no key

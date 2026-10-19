@@ -1,0 +1,338 @@
+$ capabilities list
+
+  Capabilities (167)
+  ────────────────────
+  artifact:artifact:json-to-markdown   enabled            verified             tier0   JSON to Markdown
+      Transform JSON artifacts into Markdown reports.
+  artifact:artifact:markdown-to-html   enabled            verified             tier0   Markdown to HTML
+      Transform Markdown artifacts into local HTML previews.
+  integration:activepieces             discovered         verified             tier2   Activepieces
+      Trigger and manage Activepieces flows
+  integration:cal_com                  discovered         verified             tier2   Cal.com
+      Manage scheduling through Cal.com
+  integration:coolify                  discovered         verified             tier2   Coolify
+      Manage self-hosted infrastructure
+  integration:discord                  discovered         verified             tier2   Discord
+      Run tasks and approve actions from Discord. XR must be running on your computer.
+  integration:docker                   discovered         verified             tier0   Docker
+      Manage Docker containers
+  integration:dropbox                  discovered         verified             tier2   Dropbox
+      Store and manage files in Dropbox
+  integration:erpnext                  discovered         verified             tier2   ERPNext
+      Sync with ERPNext ERP system
+  integration:github                   discovered         verified             tier2   GitHub
+      Manage repositories, issues, and pull requests
+  integration:gitlab                   discovered         verified             tier2   GitLab
+      Manage repositories and merge requests
+  integration:gmail                    discovered         verified             tier2   Gmail
+      Send and receive emails through Gmail
+  integration:google_calendar          discovered         verified             tier2   Google Calendar
+      Sync events with Google Calendar
+  integration:google_drive             discovered         verified             tier2   Google Drive
+      Store and manage files in Google Drive
+  integration:hubspot                  discovered         verified             tier2   HubSpot
+      Sync contacts and deals with HubSpot CRM
+  integration:jira                     discovered         verified             tier2   Jira
+      Manage issues and sprints in Jira
+  integration:linear                   discovered         verified             tier2   Linear
+      Manage issues and projects in Linear
+  integration:outlook                  discovered         verified             tier2   Microsoft Outlook
+      Send and receive emails through Outlook
+  integration:microsoft_teams          discovered         verified             tier2   Microsoft Teams
+      Collaborate through Microsoft Teams
+  integration:n8n                      discovered         verified             tier2   n8n
+      Trigger and manage n8n workflows
+  integration:nextcloud                discovered         verified             tier2   Nextcloud
+      Self-hosted file storage
+  integration:onedrive                 discovered         verified             tier2   OneDrive
+      Store and manage files in OneDrive
+  integration:outlook_calendar         discovered         verified             tier2   Outlook Calendar
+      Sync events with Outlook Calendar
+  integration:paypal                   discovered         verified             tier2   PayPal
+      Process payments through PayPal
+  integration:plausible                discovered         verified             tier2   Plausible
+      Privacy-first web analytics
+  integration:posthog                  discovered         verified             tier2   PostHog
+      Product analytics and feature flags
+  integration:salesforce               discovered         verified             tier2   Salesforce
+      Sync with Salesforce CRM
+  integration:shopify                  discovered         verified             tier2   Shopify
+      Manage Shopify store
+  integration:slack                    discovered         verified             tier2   Slack
+      Send messages and manage channels in Slack
+  integration:stripe                   discovered         verified             tier2   Stripe
+      Process payments and manage subscriptions
+  integration:telegram                 discovered         verified             tier2   Telegram
+      Run tasks and approve actions from your phone. XR must be running on your computer.
+  integration:twenty                   discovered         verified             tier2   Twenty
+      Sync with Twenty CRM
+  integration:whatsapp                 discovered         verified             tier2   WhatsApp
+      Link XR as a companion device and talk to it from your phone. Unofficial client — read the warning first.
+  integration:whatsapp_business        discovered         verified             tier2   WhatsApp Business
+      Send messages through WhatsApp Business API
+  integration:woocommerce              discovered         verified             tier2   WooCommerce
+      Manage WooCommerce store
+  provider:anthropic                   enabled            verified             tier2   Anthropic Claude
+      Best-in-class reasoning and safety. Excellent for complex tasks.
+  provider:bedrock                     enabled            verified             tier2   AWS Bedrock
+      AWS-managed model access. IAM roles, VPC support, enterprise compliance.
+  provider:cerebras                    enabled            verified             tier2   Cerebras
+      Fastest inference available. Free tier with generous limits.
+  provider:cohere                      enabled            verified             tier2   Cohere
+      Long-context specialists. Command R+ is excellent for RAG and documents.
+  provider:deepseek                    enabled            verified             tier2   DeepSeek
+      Affordable Chinese reasoning models. Very low cost.
+  provider:fireworks                   enabled            verified             tier2   Fireworks AI
+      Fast inference for open-source models. Competitive pricing.
+  provider:google                      enabled            verified             tier2   Google Gemini
+      Google Gemini with free tier (15 req/min). Vision and long-context support.
+  provider:gpt4all                     enabled            verified             tier1   GPT4All (Local)
+      GPT4All local API server.
+  provider:groq                        enabled            verified             tier2   Groq (Fast)
+      Blazing fast inference on open-source models. Generous free tier.
+  provider:huggingface                 enabled            verified             tier2   Hugging Face
+      Inference API for thousands of models. Serverless and dedicated endpoints.
+  provider:jan                         enabled            verified             tier1   Jan (Local)
+      Jan local AI assistant with built-in model management.
+  provider:koboldcpp                   enabled            verified             tier1   KoboldCPP (Local)
+      KoboldCPP OpenAI-compatible local endpoint.
+  provider:llamacpp                    enabled            verified             tier1   llama.cpp server (Local)
+      llama-server OpenAI-compatible local endpoint.
+  provider:lmstudio                    enabled            verified             tier1   LM Studio (Local)
+      LM Studio local server with OpenAI-compatible API.
+  provider:localai                     enabled            verified             tier1   LocalAI (Local)
+      OpenAI-compatible wrapper for local model inference.
+  provider:mistral                     enabled            verified             tier2   Mistral AI
+      European LLM provider. Excellent coding models.
+  provider:ollama                      enabled            verified             tier1   Ollama (Local)
+      Self-hosted local models via Ollama. Zero cost, runs on your hardware.
+  provider:openai                      enabled            verified             tier2   OpenAI
+      Industry standard. GPT-4o, o1, and embeddings. Best quality/cost balance.
+  provider:openrouter                  enabled            verified             tier2   OpenRouter
+      Unified gateway to 200+ models. One key, many providers.
+  provider:perplexity                  enabled            verified             tier2   Perplexity
+      Search-augmented LLM. Real-time citations and web search.
+  provider:sambanova                   enabled            verified             tier2   SambaNova
+      Enterprise AI inference platform with fast throughput.
+  provider:sglang                      enabled            verified             tier1   SGLang (Local)
+      SGLang OpenAI-compatible local server.
+  provider:textgenwebui                enabled            verified             tier1   Text Generation WebUI (Local)
+      oobabooga Text Generation WebUI OpenAI-compatible API.
+  provider:together                    enabled            verified             tier2   Together AI
+      Cheap open-source model inference. Good for experimentation.
+  provider:vllm                        enabled            verified             tier1   vLLM (Local)
+      High-throughput local inference server with OpenAI-compatible API.
+  provider:xai                         enabled            verified             tier2   xAI (Grok)
+      xAI Grok models. Vision and real-time data capabilities.
+  skill:academic_research              enabled            verified             tier0   Academic Research
+      Academic Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclu
+  skill:research:academic              enabled            unsigned             tier0   Academic Research Pack
+      Academic source discovery, paper analysis, citation-aware synthesis, and uncertainty tracking.
+  skill:api_design                     enabled            verified             tier0   Api_design
+      api_design professional XR skill
+  skill:architecture_reviewer          enabled            verified             tier0   Architecture Reviewer
+      Architecture Reviewer delivers production-grade technical work with clear architecture, tests, maintainability, and oper
+  skill:role:verifier                  enabled            unsigned             tier1   Artifact Verifier
+      Inspects the ACTUAL artifacts (files, outputs, hashes) a mission produced and decides whether they satisfy the objective
+  skill:brand_designer                 enabled            verified             tier0   Brand Designer
+      Brand Designer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution qua
+  skill:role:builder                   enabled            unsigned             tier1   Builder / Developer
+      Implements approved repository changes inside the current workspace.
+  skill:code_auditor                   enabled            verified             tier0   Code Auditor
+      Code Auditor delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handlin
+  skill:competitive_intelligence       enabled            verified             tier0   Competitive Intelligence
+      Competitive Intelligence delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear
+  skill:content_creator                enabled            verified             tier0   Content Creator
+      Content Creator delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution qu
+  skill:copywriter                     enabled            verified             tier0   Copywriter
+      Copywriter delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quality
+  skill:crm_assistant                  enabled            verified             tier0   CRM Assistant
+      CRM Assistant delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+  skill:customer_support               enabled            verified             tier0   Customer Support
+      Customer Support delivers practical business output with market context, metrics, stakeholder clarity, and execution foc
+  skill:daily-brief                    enabled            verified             tier0   Daily Brief
+      daily-brief professional XR skill
+  skill:db_migrate                     enabled            verified             tier0   Db_migrate
+      db_migrate professional XR skill
+  skill:debug_error                    enabled            verified             tier0   Debug_error
+      debug_error professional XR skill
+  skill:debugging_expert               enabled            verified             tier0   Debugging Expert
+      Debugging Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operation
+  skill:deep_research                  enabled            verified             tier0   Deep Research
+      Deep Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusion
+  skill:research:deep                  enabled            unsigned             tier0   Deep Research Pack
+      Plan, search, rank, synthesize, and report research through XR's Research Engine.
+  skill:devops_engineer                enabled            verified             tier0   DevOps Engineer
+      DevOps Engineer delivers production-grade technical work with clear architecture, tests, maintainability, and operationa
+  skill:docker_expert                  enabled            verified             tier0   Docker Expert
+      Docker Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational 
+  skill:email_writer                   enabled            verified             tier0   Email Writer
+      Email Writer delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+  skill:role:executor                  enabled            unsigned             tier1   Executor
+      Runs approved execution tasks with the narrowest possible side-effect scope.
+  skill:explain_codebase               enabled            verified             tier0   Explain_codebase
+      explain_codebase professional XR skill
+  skill:financial_analyst              enabled            verified             tier0   Financial Analyst
+      Financial Analyst delivers practical business output with market context, metrics, stakeholder clarity, and execution fo
+  skill:full_stack_engineer            enabled            verified             tier0   Full Stack Engineer
+      Full Stack Engineer delivers production-grade technical work with clear architecture, tests, maintainability, and operat
+  skill:generate_readme                enabled            verified             tier0   Generate_readme
+      generate_readme professional XR skill
+  skill:git_expert                     enabled            verified             tier0   Git Expert
+      Git Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awa
+  skill:git_commit_message             enabled            verified             tier0   Git_commit_message
+      git_commit_message professional XR skill
+  skill:go_expert                      enabled            verified             tier0   Go Expert
+      Go Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational awar
+  skill:incident_response              enabled            verified             tier0   Incident Response
+      Incident Response delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk ha
+  skill:java_expert                    enabled            verified             tier0   Java Expert
+      Java Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational aw
+  skill:kubernetes_expert              enabled            verified             tier0   Kubernetes Expert
+      Kubernetes Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operatio
+  skill:logo_designer                  enabled            verified             tier0   Logo Designer
+      Logo Designer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution qual
+  skill:malware_analyst                enabled            verified             tier0   Malware Analyst
+      Malware Analyst delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk hand
+  skill:market_research                enabled            verified             tier0   Market Research
+      Market Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusi
+  skill:research:market                enabled            unsigned             tier0   Market Research Pack
+      Market, competitor, segment, and positioning research using XR's Research Engine.
+  skill:marketing_strategist           enabled            verified             tier0   Marketing Strategist
+      Marketing Strategist delivers practical business output with market context, metrics, stakeholder clarity, and execution
+  skill:role:memory-manager            enabled            unsigned             tier1   Memory Manager
+      Prepares scoped memory packages and prevents broad memory bleed between workers.
+  skill:negotiation_expert             enabled            verified             tier0   Negotiation Expert
+      Negotiation Expert delivers practical business output with market context, metrics, stakeholder clarity, and execution f
+  skill:nextjs_expert                  enabled            verified             tier0   Next.js Expert
+      Next.js Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational
+  skill:node_expert                    enabled            verified             tier0   Node Expert
+      Node Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational aw
+  skill:osint_researcher               enabled            verified             tier0   OSINT Researcher
+      OSINT Researcher delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk han
+  skill:paper_analyzer                 enabled            verified             tier0   Paper Analyzer
+      Paper Analyzer delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusio
+  skill:patent_research                enabled            verified             tier0   Patent Research
+      Patent Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conclusi
+  skill:pentest_assistant              enabled            verified             tier0   Pentest Assistant
+      Pentest Assistant delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk ha
+  skill:performance_optimizer          enabled            verified             tier0   Performance Optimizer
+      Performance Optimizer delivers production-grade technical work with clear architecture, tests, maintainability, and oper
+  skill:role:planner                   enabled            unsigned             tier1   Planner
+      Converts the assigned objective into an explicit plan and execution checklist.
+  skill:pr_description                 enabled            verified             tier0   Pr_description
+      pr_description professional XR skill
+  skill:presentation_builder           enabled            verified             tier0   Presentation Builder
+      Presentation Builder delivers distinctive creative work grounded in audience, constraints, taste, iteration, and executi
+  skill:privacy_advisor                enabled            verified             tier0   Privacy Advisor
+      Privacy Advisor delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk hand
+  skill:product_manager                enabled            verified             tier0   Product Manager
+      Product Manager delivers practical business output with market context, metrics, stakeholder clarity, and execution focu
+  skill:project_manager                enabled            verified             tier0   Project Manager
+      Project Manager delivers practical business output with market context, metrics, stakeholder clarity, and execution focu
+  skill:proposal_writer                enabled            verified             tier0   Proposal Writer
+      Proposal Writer delivers practical business output with market context, metrics, stakeholder clarity, and execution focu
+  skill:python_expert                  enabled            verified             tier0   Python Expert
+      Python Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational 
+  skill:react_expert                   enabled            verified             tier0   React Expert
+      React Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational a
+  skill:refactor_clean                 enabled            verified             tier0   Refactor_clean
+      refactor_clean professional XR skill
+  skill:refactoring_expert             enabled            verified             tier0   Refactoring Expert
+      Refactoring Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operati
+  skill:role:researcher                enabled            unsigned             tier1   Researcher
+      Collects evidence, repo context, ecosystem facts, and counterpoints.
+  skill:role:reviewer                  enabled            unsigned             tier1   Reviewer
+      Separates critique from generation and can request changes before merge/synthesis.
+  skill:role:router                    enabled            unsigned             tier1   Router
+      Routes the workflow to the right built-in agent roles and determines task kind.
+  skill:role:model-selector            enabled            unsigned             tier1   Router / Model Selector
+      Chooses provider/model strategy per agent role when overrides are useful.
+  skill:rust_expert                    enabled            verified             tier0   Rust Expert
+      Rust Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational aw
+  skill:sales_agent                    enabled            verified             tier0   Sales Agent
+      Sales Agent delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+  skill:scientific_research            enabled            verified             tier0   Scientific Research
+      Scientific Research delivers source-aware research synthesis with evidence grading, uncertainty tracking, and clear conc
+  skill:role:security-checker          enabled            unsigned             tier1   Security Checker
+      Performs deterministic and model-assisted safety review before risky execution proceeds.
+  skill:security_audit                 enabled            verified             tier0   Security_audit
+      security_audit professional XR skill
+  skill:seo_expert                     enabled            verified             tier0   SEO Expert
+      SEO Expert delivers practical business output with market context, metrics, stakeholder clarity, and execution focus.
+  skill:soc_analyst                    enabled            verified             tier0   SOC Analyst
+      SOC Analyst delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handling
+  skill:social_media_creator           enabled            verified             tier0   Social Media Creator
+      Social Media Creator delivers distinctive creative work grounded in audience, constraints, taste, iteration, and executi
+  skill:startup_advisor                enabled            verified             tier0   Startup Advisor
+      Startup Advisor delivers practical business output with market context, metrics, stakeholder clarity, and execution focu
+  skill:story_writer                   enabled            verified             tier0   Story Writer
+      Story Writer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution quali
+  skill:role:supervisor                enabled            unsigned             tier1   Supervisor / Coordinator
+      Owns workflow state, delegation, blocking, review gates, and final completion.
+  skill:role:synthesizer               enabled            unsigned             tier1   Synthesizer
+      Combines reviewed worker outputs into the final user-facing answer.
+  skill:testing_expert                 enabled            verified             tier0   Testing Expert
+      Testing Expert delivers production-grade technical work with clear architecture, tests, maintainability, and operational
+  skill:threat_hunter                  enabled            verified             tier0   Threat Hunter
+      Threat Hunter delivers defensive, authorized, auditable security analysis with explicit scope boundaries and risk handli
+  skill:ui_designer                    enabled            verified             tier0   UI Designer
+      UI Designer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution qualit
+  skill:ux_designer                    enabled            verified             tier0   UX Designer
+      UX Designer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and execution qualit
+  skill:video_script_writer            enabled            verified             tier0   Video Script Writer
+      Video Script Writer delivers distinctive creative work grounded in audience, constraints, taste, iteration, and executio
+  skill:write_tests                    enabled            verified             tier0   Write_tests
+      write_tests professional XR skill
+  tool:check_package                   enabled            verified             tier1   check_package
+      Look up a package's latest version & info (npm or pypi). Egress-gated.
+  tool:computer_control                enabled            verified             tier2   computer_control
+      Perform a multi-step task on the user's computer (open apps, navigate sites, fill forms, click, type). The user is promp
+  tool:delete_file                     enabled            verified             tier1   delete_file
+      Delete a file inside the working tree. Requires approval.
+  tool:fetch_url                       enabled            verified             tier1   fetch_url
+      Fetch a web page (allow-listed domains only) and return clean text.
+  tool:list_dir                        enabled            verified             tier0   list_dir
+      List files/folders inside a directory in the working tree.
+  tool:read_file                       enabled            verified             tier0   read_file
+      Read a UTF-8 text file inside the working directory.
+  tool:repo_context                    enabled            verified             tier0   repo_context
+      Read a relevant SECTION of a repository file (symbol-scoped when possible). Does not dump entire files.
+  tool:repo_dependencies               enabled            verified             tier0   repo_dependencies
+      Show internal/external import edges for a repository file.
+  tool:repo_diff                       enabled            verified             tier0   repo_diff
+      Return the real git diff for the workspace (or one file). Uses git, not timestamps.
+  tool:repo_map                        enabled            verified             tier0   repo_map
+      Return a compact, token-budgeted structural map of the repository ranked for the current task. Structural context only —
+  tool:repo_search                     enabled            verified             tier0   repo_search
+      Search the repository index for files and symbols matching a query. Workspace-scoped; does not return secrets.
+  tool:repo_symbols                    enabled            verified             tier0   repo_symbols
+      Look up a symbol by exact name in the repository index.
+  tool:research_crawl                  enabled            verified             tier0   research_crawl
+      Crawl a site (async, bounded by max pages/depth) and return normalized pages with citations. Egress- and SSRF-gated.
+  tool:research_extract                enabled            verified             tier0   research_extract
+      Extract structured data from URLs against a JSON schema (schema-validated — invalid output is rejected). Egress- and SSR
+  tool:research_map                    enabled            verified             tier0   research_map
+      Map a site's URLs (discovery only — does not scrape them). Egress- and SSRF-gated.
+  tool:research_scrape                 enabled            verified             tier0   research_scrape
+      Scrape one public URL into clean text/markdown with metadata and a content hash. Egress- and SSRF-gated.
+  tool:research_search                 enabled            verified             tier0   research_search
+      Search the web through XR's research providers (SearXNG / Firecrawl) and return normalized, cited sources. Egress- and S
+  tool:search_code                     enabled            verified             tier0   search_code
+      Search file contents in the working directory for a regex pattern. Returns matching lines as path:line:text. Optional `p
+  tool:shell                           enabled            verified             tier2   shell
+      Run a shell command in the working dir. Requires approval. Dangerous commands are blocked.
+  tool:system_apps                     enabled            verified             tier2   system_apps
+      List visible/open applications when the OS supports it.
+  tool:system_clipboard_read           enabled            verified             tier2   system_clipboard_read
+      Read the system clipboard when supported.
+  tool:system_clipboard_write          enabled            verified             tier2   system_clipboard_write
+      Write text to the system clipboard (approval-gated).
+  tool:system_notify                   enabled            verified             tier2   system_notify
+      Show a local notification (approval-gated).
+  tool:system_open_app                 enabled            verified             tier2   system_open_app
+      Open an application by name (approval-gated).
+  tool:web_search                      enabled            verified             tier1   web_search
+      Search the web via a SearXNG instance. Returns titles + snippets + urls.
+  tool:write_file                      enabled            verified             tier1   write_file
+      Create or overwrite a text file inside the working directory. Requires approval.

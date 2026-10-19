@@ -1,0 +1,69 @@
+$ providers list
+
+  ▀▄▀ █▀█  XR — The AI Agent You Can Actually Trust
+  █░█ █▀▄  by @rrrtx · local-first · BYOK · spend-capped · secure
+
+Providers
+  Active: ollama (qwen2.5:7b)
+  Routing: hybrid
+
+Built-in Providers
+  ● ollama       🏠 🆓  no key
+     Ollama (Local)  [chat, tool-use, json-mode, streaming]
+    lmstudio     🏠 🆓  no key
+     LM Studio (Local)  [chat, tool-use, json-mode, streaming]
+    llamacpp     🏠 🆓  no key
+     llama.cpp server (Local)  [chat, embeddings, json-mode, streaming]
+    jan          🏠 🆓  no key
+     Jan (Local)  [chat, tool-use, json-mode, streaming]
+    localai      🏠 🆓  no key
+     LocalAI (Local)  [chat, tool-use, json-mode, streaming]
+    vllm         🏠 🆓  no key
+     vLLM (Local)  [chat, tool-use, json-mode, streaming]
+    gpt4all      🏠 🆓  no key
+     GPT4All (Local)  [chat, streaming]
+    koboldcpp    🏠 🆓  no key
+     KoboldCPP (Local)  [chat, streaming]
+    textgenwebui 🏠 🆓  no key
+     Text Generation WebUI (Local)  [chat, streaming]
+    sglang       🏠 🆓  no key
+     SGLang (Local)  [chat, json-mode, streaming]
+    groq         ☁️ 🆓  key missing
+     Groq (Fast)  [chat, tool-use, json-mode, streaming]
+    deepseek     ☁️ 🆓  key missing
+     DeepSeek  [chat, reasoning, json-mode, streaming]
+    openrouter   ☁️ 💰  key missing
+     OpenRouter  [chat, vision, tool-use, json-mode, streaming]
+    together     ☁️ 💰  key missing
+     Together AI  [chat, tool-use, json-mode, streaming]
+    fireworks    ☁️ 💰  key missing
+     Fireworks AI  [chat, tool-use, json-mode, streaming]
+    sambanova    ☁️ 💰  key missing
+     SambaNova  [chat, tool-use, json-mode, streaming]
+    xai          ☁️ 💎  key missing
+     xAI (Grok)  [chat, vision, tool-use, json-mode, streaming]
+    perplexity   ☁️ 💎  key missing
+     Perplexity  [chat, json-mode, streaming]
+    huggingface  ☁️ 💰  key missing
+     Hugging Face  [chat, json-mode, streaming]
+    cerebras     ☁️ 🆓  key missing
+     Cerebras  [chat, streaming]
+    anthropic    ☁️ 💎  key missing
+     Anthropic Claude  [chat, vision, tool-use, json-mode, streaming]
+    google       ☁️ 🆓  key missing
+     Google Gemini  [chat, vision, embeddings, tool-use, json-mode, streaming]
+    mistral      ☁️ 💰  key missing
+     Mistral AI  [chat, tool-use, json-mode, streaming]
+    cohere       ☁️ 💎  key missing
+     Cohere  [chat, embeddings, tool-use, json-mode, streaming]
+    bedrock      ☁️ 🏢  no key
+     AWS Bedrock  [chat, vision, tool-use, json-mode, streaming]
+    openai       ☁️ 💎  key missing
+     OpenAI  [chat, vision, embeddings, tool-use, json-mode, functions, streaming]
+
+
+Change model anytime
+  xr providers set <id> [model]   e.g. xr providers set ollama llama3.2
+  xr models set <runtime> <model> local runtime selection
+  Shell: Alt+P · /model <provider> [model]
+  Control Center: xr serve → Providers / Models
