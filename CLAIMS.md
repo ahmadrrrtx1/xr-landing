@@ -373,3 +373,70 @@ reason — it used to print `npm i -g @rrrtx/xr`.
 **Not said anywhere on the site:** that XR is released, that a visitor can
 install it today, that the published artifact matches the screenshots, or
 that a download count exists.
+
+---
+
+## 10. The feedback form — "tell us what to build next"
+
+Added in Act 4 at the owner's request: "a simple google form for collecting
+people review and like there opinion what qwe should add".
+
+### What the page says
+
+| Where | Copy | Why it is true |
+|---|---|---|
+| Section eyebrow | "Your take" | — |
+| Heading | "Tell us what to build next" | The form has exactly one free-text answer. |
+| Body | "XR is not finished and it will not be finished in a vacuum." | The repo is public under MIT and unreleased — see §9.6. |
+| Body | "The address below is optional. Leave it and we cannot reply; leave it in and we will, once." | The reply address is a single optional field. Nothing is mailed automatically; there is no ESP on this path. |
+| Privacy line | "This form posts straight to a Google Form. Google stores what you type; we do not read it, and nothing here is tied to the waitlist." | True: the answer goes to the owner's Google Sheet and is never written to the waitlist table. |
+| Idle status | "One form, one answer. No newsletter." | There is no mailing list on this path. |
+| Success | "That is with us. Thank you." | Only shown after Google confirmed the response. |
+| Failure | Whatever Google said, or "That did not go through. Email hello@rrrtx-systems.com instead." | The server forwards the answer and reports Google's actual answer. |
+
+### What the page does **not** say
+
+- It does not say a response was recorded unless Google's server confirmed it.
+- It does not say the form is connected when it is not — the unconfigured
+  state says "The form is not connected yet" in plain words, and offers
+  `hello@rrrtx-systems.com`.
+- It does not claim the feedback is anonymous, private, or deleted. It says
+  exactly what happens: Google stores it, we do not read it, and it is not
+  tied to the waitlist.
+- It does not offer a newsletter, a list, or a drip campaign.
+
+### The one honest line that needed care
+
+The first implementation posted straight to Google from the browser with
+`mode: "no-cors"`. That mode returns an opaque response, so the page could
+not tell "recorded" from "that form does not exist" — every answer, including
+the ones Google threw away, produced a green "That is with us. Thank you."
+That is a dark pattern: a form that lies about what it collected.
+
+The fix is `app/api/feedback/route.ts`: the browser posts to the site's own
+route, the server forwards to Google with `redirect: "manual"`, and the
+route reports the real status. A 404 from Google — which is exactly what an
+unpublished or wrong form id returns — now produces a visible failure and
+an email address, not a false thank-you.
+
+### The Google Form itself
+
+The form shell was created in the owner's Drive through the Google Drive
+API:
+
+- Name: **XR — what should we build next?**
+- id: `1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8`
+- <https://docs.google.com/forms/d/1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8/edit>
+
+The Forms API is not reachable from the tooling available here (the Drive
+connector exposes no `forms.batchUpdate`), so **adding the one question and
+publishing the form is a two-minute manual step**, written out in
+`README.md` § "The feedback form". The site is built to work the moment it
+is done, and to be honest about not being done.
+
+| State | What the visitor sees |
+|---|---|
+| Form id + entry id set | The site's own form, in the site's design, posting through the server |
+| Form id only | Google's own form, embedded, exactly as Google renders it |
+| Neither | "The form is not connected yet" + `hello@rrrtx-systems.com` |
+| Google returns 404 | "That form is not published yet. Email hello@rrrtx-systems.com instead." |

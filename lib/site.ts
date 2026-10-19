@@ -44,6 +44,7 @@ export const nav = [
   { label: "Only XR", href: "#only-xr" },
   { label: "Preview", href: "#preview" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Feedback", href: "#feedback" },
   { label: "Docs", href: "https://github.com/ahmadrrrtx/xr#readme", external: true },
 ] as const;
 

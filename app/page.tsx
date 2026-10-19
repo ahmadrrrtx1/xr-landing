@@ -5,6 +5,7 @@ import OnlyXR from "@/components/onlyxr/OnlyXR";
 import TerminalReplay from "@/components/preview/TerminalReplay";
 import OnboardingStrip from "@/components/onboarding/OnboardingStrip";
 import Pricing from "@/components/pricing/Pricing";
+import Feedback from "@/components/feedback/Feedback";
 import WaitlistForm from "@/components/waitlist/WaitlistForm";
 import GitHubStar from "@/components/site/GitHubStar";
 import { features } from "@/lib/features";
@@ -126,6 +127,8 @@ export default async function Page() {
       <OnboardingStrip />
 
       <Pricing />
+
+      <Feedback />
 
       {/* ── final CTA ───────────────────────────────────────────── */}
       <section

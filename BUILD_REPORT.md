@@ -438,3 +438,154 @@ And the suite, re-run against the revised build:
 320 / 390 / 768 / 1280 / 1600 —  horizontal overflow 0 px,  failed requests 0
 39 images, 0 without an alt attribute
 ```
+
+---
+
+## 10. Act 4 — the feedback form, the repository, the deployment
+
+The owner asked for three things: a simple Google Form for collecting
+reviews and opinions on what XR should add next; a repository on
+`github.com/ahmadrrrtx1` with the landing-page code pushed to it; and a
+Vercel deployment if possible, with a list of what to configure there.
+
+### 10.1 The feedback section
+
+A new section between Pricing and the final CTA: **"Tell us what to build
+next"**. It asks one thing and means it — one free-text answer, one optional
+reply address, and a set of topic chips so the answers can be sorted later
+without a spreadsheet full of blank cells.
+
+`components/feedback/Feedback.tsx` renders the form in the site's own
+design. It has three states, and all three are honest:
+
+| Configuration | What the visitor gets |
+|---|---|
+| `NEXT_PUBLIC_GOOGLE_FORM_ID` **and** `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | The site's own form, in the site's design |
+| `NEXT_PUBLIC_GOOGLE_FORM_ID` only | Google's own form, embedded, exactly as Google renders it |
+| Neither | "The form is not connected yet" + `hello@rrrtx-systems.com` |
+
+### 10.2 The Google Form itself
+
+The form was created in the owner's Drive through the Google Drive API:
+
+- **XR — what should we build next?**
+- id `1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8`
+- <https://docs.google.com/forms/d/1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8/edit>
+
+The Drive connector can create a form but cannot add a question or publish
+it — that is the Google **Forms** API (`forms.batchUpdate`), which is not
+reachable from the tooling available here. Adding the single question
+" What should XR do next?" and pressing **Send** is therefore a two-minute
+manual step, written out in `README.md` § "The feedback form". The site
+works the instant it is done, and says so plainly until then.
+
+### 10.3 The bug worth recording
+
+The first implementation posted to Google straight from the browser, in
+`mode: "no-cors"`. It worked — and it lied.
+
+A no-cors POST returns an **opaque** response. The page cannot read the
+status code, so it cannot tell a saved answer from a form that does not
+exist. With a dummy form id, every submission produced a 404 from Google
+and a green **"That is with us. Thank you."** on the page. A visitor would
+have been told their opinion was received when it had been thrown away.
+
+That is a dark pattern, and it is exactly the kind of thing the "real or
+nothing" rule exists to prevent. The fix:
+
+```
+browser  ──POST /api/feedback──▶  the site's server  ──POST formResponse──▶  Google
+```
+
+`app/api/feedback/route.ts` forwards the answer with `redirect: "manual"`,
+reads the real status, and reports it. Google answers a good submission
+with a redirect and an unpublished form with a 404, and the visitor now
+sees the difference:
+
+| Google's answer | What the page says |
+|---|---|
+| 200 or 302 | "That is with us. Thank you." |
+| 404 | "That form is not published yet. Email hello@rrrtx-systems.com instead." |
+| anything else | "That did not go through. Email hello@rrrtx-systems.com instead." |
+
+The route also refuses an answer under three characters, refuses a
+malformed address, and silently drops anything that fills the off-screen
+`company` honeypot. Nothing is stored: the answer is not written to the
+waitlist, not logged, and not kept after the response.
+
+Two things fell out of that change for the better:
+
+- **`connect-src` stays at `'self'`.** The browser never contacts Google.
+  Only the server does, and only for this one form.
+- **It works without JavaScript.** The answer box carries the entry id as
+  its `name` and the form posts straight to Google, so the answer still
+  lands in the right question.
+
+### 10.4 The repository
+
+The site now lives in its own repository, created through the GitHub API
+with the owner's personal access token:
+
+> **https://github.com/ahmadrrrtx1/xr-landing**
+
+Public, because the content of the site is public and the two other
+repositories on that account are public too. It can be made private later
+without changing a line of the site.
+
+The token was used for the API calls only. It was never written to a file,
+never committed, and never put in a remote URL — the remote is set with a
+clean URL and the push is authenticated by an `Authorization` header.
+
+| | |
+|---|---|
+| Commits | 2 — the site, then the feedback form |
+| Tracked files | 202 |
+| Secrets in the tree | none (the token was never written down) |
+| `.env.example` | tracked, values empty |
+
+`.gitignore` keeps `node_modules`, `.next`, `.local` (the local libSQL
+test database), `.env`, `.env*.local` and `.vercel` out of the tree.
+
+### 10.5 Vercel
+
+The deployment is one click from the new repository, because the project
+is a stock Next.js app: framework preset **Next.js**, build command
+`npm run build`, output the default, Node 20.
+
+The environment variables that have to be set are listed in the README and
+repeated in the handover note. The two that are easy to forget are
+`NEXT_PUBLIC_SITE_URL` — without it the canonical link, the Open Graph URL
+and the sitemap point at the wrong host — and the waitlist schema, which
+has to be applied to the Turso database once, by hand.
+
+### 10.6 Re-measured
+
+The new section adds one client component and one API route, and nothing
+on the critical path. Lighthouse, against the production build:
+
+| | mobile · simulated | mobile · real Slow 4G trace | desktop |
+|---|---|---|---|
+| **Performance** | **90 – 91** | **91** | **100** |
+| **Accessibility** | **100** | **100** | **100** |
+| **Best Practices** | **100** | **100** | **100** |
+| **SEO** | **100** | **100** | **100** |
+| LCP | 3.2 s | **2.0 s** | 0.8 s |
+| CLS | 0.010 | 0.010 | 0 |
+| TBT | 130–200 ms | 330 ms | 0 ms |
+
+The mobile score moves by a point or two between runs in this sandbox; the
+range is the honest one.
+
+And the suite, re-run against the revised build:
+
+```
+23/23 acceptance checks passed          (5 of them are the new feedback section)
+320 / 390 / 768 / 1280 / 1600 —  horizontal overflow 0 px,  failed requests 0
+39 images, 0 without an alt attribute
+```
+
+The five new checks cover the section's existence, its heading, the nav
+link into it, and — in the unconfigured state — that it says the form is
+not connected and offers an email address. When the form *is* configured
+the same checks assert the free-text box, the topic choices, the optional
+reply address and the `aria-live` status region.

@@ -44,17 +44,26 @@ npm run build
 npm start
 ```
 
-### The two environment variables
+### The environment variables
 
 ```bash
+# the waitlist — required for the signup to work
 TURSO_DATABASE_URL=libsql://your-db-name-your-org.turso.io
 TURSO_AUTH_TOKEN=...
+
+# the feedback form — public identifiers, not secrets
+NEXT_PUBLIC_GOOGLE_FORM_ID=1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8
+NEXT_PUBLIC_GOOGLE_FORM_ENTRY=entry.123456789
 ```
 
-Nothing else is required. With no Turso configuration the site still builds,
-renders and deploys; the waitlist endpoint answers `503` with a plain
-sentence, and the form shows that sentence to the visitor. It never pretends
-to have saved an address it did not save.
+The first two are the only ones that are needed for the site to function.
+With no Turso configuration the site still builds, renders and deploys; the
+waitlist endpoint answers `503` with a plain sentence, and the form shows
+that sentence to the visitor. It never pretends to have saved an address
+it did not save.
+
+The Google Form variables are described in full in
+[The feedback form](#the-feedback-form--tell-us-what-to-build-next) below.
 
 ---
 
@@ -153,13 +162,94 @@ turso db shell waitlist "SELECT email, source, created_at FROM waitlist ORDER BY
 
 ---
 
+## The feedback form — "tell us what to build next"
+
+A section on the page where somebody can say what XR should do next, and
+say what they think of it. The answers land in a **Google Form**, so they
+land in the owner's own Google Sheet.
+
+The form shell already exists, created in the owner's Drive:
+
+> **XR — what should we build next?**
+> <https://docs.google.com/forms/d/1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8/edit>
+
+### Turning it on — two minutes, once
+
+1. Open the form above and add one question:
+   **"What should XR do next?"** (a paragraph question is right).
+   Optional: a second short-answer question for the reply address.
+2. Click **Send** in the top right and publish it to the web, so the
+   form is reachable without a Google login.
+3. Click the menu (⋮) → **Get prefilled link**. The link looks like
+   `https://docs.google.com/forms/d/e/<FORM_ID>/viewform?entry.123456789`
+   — the part after `d/e/` is the **form id**, the `entry.123456789` at
+   the end is the **entry id**.
+4. Set the environment variables and redeploy:
+
+   | Variable | Value | Effect |
+   |---|---|---|
+   | `NEXT_PUBLIC_GOOGLE_FORM_ID` | `<FORM_ID>` | **Required.** The site will not pretend to collect anything without it. |
+   | `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | `entry.123456789` | Optional, but it is the nicer version. |
+
+   - With **both** set: the site renders its own form, in the site's own
+     design, and posts the answer to Google through the server.
+   - With only the **form id** set: Google's own form is embedded in the
+     page instead, exactly as Google renders it. Use this if you want
+     more than one question.
+   - With **neither** set: the section says plainly that the form is not
+     connected yet and offers `hello@rrrtx-systems.com` instead. It never
+     pretends to have collected something.
+
+   These are public identifiers, not secrets — they appear in the page
+   source. There is no API key, no service account and no OAuth in this
+   path.
+
+### How the answer travels
+
+```
+browser  ──POST /api/feedback──▶  the site's server  ──POST formResponse──▶  Google
+```
+
+The browser does **not** talk to Google directly. A cross-origin POST to
+Google can only be made in `no-cors` mode, which returns an opaque
+response — the page cannot tell "recorded" from "that form does not
+exist", and both look the same. A form that says "thank you" for a
+message that went nowhere is worse than no form at all. So the answer
+goes to `/api/feedback`, the server forwards it, and the visitor is told
+the truth either way.
+
+Nothing is stored: the answer is not written to the waitlist, not logged,
+and not kept after the response. Google owns the response sheet; the
+route only carries the text across.
+
+`app/api/feedback/route.ts` also rejects an answer under 3 characters,
+rejects a malformed email, and silently drops anything that fills the
+off-screen `company` honeypot.
+
+If JavaScript is off, the form still works: the answer box carries the
+entry id as its `name` and the form posts straight to Google.
+
+### The CSP
+
+`next.config.ts` keeps `connect-src` at `'self'` — the page never calls
+Google from the browser. `form-action` and `frame-src` name
+`https://docs.google.com`, and nothing else is opened to any third party.
+
+---
+
 ## Deploying to Vercel
 
 1. `vercel link` (or import the repo at [vercel.com/new](https://vercel.com/new))
-2. Add the two environment variables under **Settings → Environment Variables**:
-   `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`
-3. Set `NEXT_PUBLIC_SITE_URL` to the deployment URL so the canonical link,
-   the Open Graph URL and the sitemap are correct.
+2. Add the environment variables under **Settings → Environment Variables**:
+   - `TURSO_DATABASE_URL` — `libsql://<your-db>.turso.io`
+   - `TURSO_AUTH_TOKEN` — the token Turso gives you
+   - `NEXT_PUBLIC_GOOGLE_FORM_ID` — the form id (see above)
+   - `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` — the entry id, optional
+   - `NEXT_PUBLIC_SITE_URL` — the deployment URL, so the canonical link,
+     the Open Graph URL and the sitemap are correct
+3. Apply the waitlist schema once against the Turso database:
+   `npx @libsql/client schema/001_waitlist.sql` — or paste the file into
+   the Turso dashboard.
 4. `vercel --prod`
 
 The build is `next build` and the output is the default. There is no
@@ -175,6 +265,7 @@ app/
   layout.tsx        metadata, JSON-LD, fonts, nav, footer
   page.tsx          the page, in order
   api/subscribe/    the waitlist endpoint
+  api/feedback/     the proxy that forwards an answer to the Google Form
   icon.svg          the favicon, drawn from the official emblem
   robots.ts sitemap.ts not-found.tsx
 components/
@@ -188,6 +279,7 @@ components/
   tour/             TourVideo — the 37-second recording
   site/             Nav, Footer, GitHubStar
   waitlist/         WaitlistForm
+  feedback/         Feedback — "tell us what to build next"
 lib/
   site.ts features.ts turso.ts github.ts replay.ts idle.ts
 public/
@@ -196,7 +288,7 @@ public/
   media/            the tour (mp4 + webm + poster) and the placeholder voice
   cli/              the raw and cleaned XR session transcripts
   fonts/            Inter + JetBrains Mono, subset to the characters used
-  og.png            the Open Graph image
+  og.jpg            the Open Graph image
 ```
 
 ---
