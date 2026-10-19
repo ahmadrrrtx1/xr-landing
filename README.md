@@ -240,6 +240,15 @@ Google from the browser. `form-action` and `frame-src` name
 
 ---
 
+## Social — comments and replies
+
+Ready-made comments, replies and DMs for posting under your own reels,
+in `SOCIAL_COMMENTS.md`. The link they use is the live site, and they
+follow the same rule the site does: XR is not released, and none of them
+claim it is.
+
+---
+
 ## Deploying to Vercel
 
 The step-by-step version, with the exact settings, the environment
