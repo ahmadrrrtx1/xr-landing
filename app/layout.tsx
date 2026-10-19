@@ -66,7 +66,9 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     manifest: "/manifest.webmanifest",
     other: {
-      "github-stars": String(repo.stars),
+      // Only when we actually know the number. A wrong number in the
+      // metadata is a wrong number in every crawler that reads it.
+      ...(repo.stars === null ? {} : { "github-stars": String(repo.stars) }),
     },
   };
 }

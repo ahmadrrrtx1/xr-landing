@@ -5,7 +5,7 @@ import Link from "next/link";
 import { nav, site } from "@/lib/site";
 import GitHubStar from "./GitHubStar";
 
-export default function Nav({ stars }: { stars: number }) {
+export default function Nav({ stars }: { stars: number | null }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 

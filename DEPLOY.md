@@ -49,7 +49,7 @@ Every later `git push` to `main` redeploys automatically.
 | `TURSO_AUTH_TOKEN` | for the waitlist | the token for that database | the same page, **Tokens → Create API token** |
 | `NEXT_PUBLIC_SITE_URL` | **yes** | the public URL of the site, e.g. `https://xr-landing.vercel.app` | the URL Vercel gives the project |
 | `NEXT_PUBLIC_GOOGLE_FORM_ID` | for the feedback form | the id in the form's own link | see below |
-| `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | optional | e.g. `entry.123456789` | see below |
+| `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | optional | e.g. `entry.<the number from the prefilled link>` | see below |
 
 **`NEXT_PUBLIC_SITE_URL` is the one that bites.** Without it the canonical
 link, the Open Graph URL, the Twitter card and the sitemap all point at
@@ -113,8 +113,8 @@ The form already exists in your Google Drive:
 2. Press **Send** in the top right and publish it to the web, so it is
    reachable without a Google login.
 3. Press the menu (⋮) → **Get prefilled link**. The link looks like
-   `https://docs.google.com/forms/d/e/<FORM_ID>/viewform?entry.123456789`
-   — the part after `d/e/` is the **form id**, the `entry.123456789` at
+   `https://docs.google.com/forms/d/e/<FORM_ID>/viewform?entry.<the number from the prefilled link>`
+   — the part after `d/e/` is the **form id**, the `entry.<the number from the prefilled link>` at
    the end is the **entry id**.
 4. Put those two values into the Vercel environment variables and
    redeploy.

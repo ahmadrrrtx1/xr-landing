@@ -24,6 +24,25 @@ export const runtime = "nodejs";
 const FORM_ID = process.env.NEXT_PUBLIC_GOOGLE_FORM_ID ?? "";
 const ENTRY = process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY ?? "";
 
+/**
+ * What a real form id and a real entry id look like.
+ *
+ * A published Google Form id starts with `1` and is a long token; an
+ * entry id is `entry.` followed by the question's number. These patterns
+ * exist because a placeholder — `entry.<the number from the prefilled link>` is the one that ended
+ * up in the documentation and then in a live deployment — looks exactly
+ * like a real value to every layer except the one that has to talk to
+ * Google. Google answers a submission with an entry id that matches no
+ * question with a 400, and a visitor would be told their opinion was
+ * lost. The site now refuses to pretend: a value that does not look
+ * real is reported as not configured.
+ */
+const FORM_ID_RE = /^1[A-Za-z0-9_-]{20,}$/;
+const ENTRY_RE = /^entry\.\d{5,}$/;
+
+export const idsLookReal = (formId: string, entry: string) =>
+  FORM_ID_RE.test(formId) && ENTRY_RE.test(entry);
+
 const MAX_ANSWER = 2000;
 const MAX_EMAIL = 254;
 
@@ -44,6 +63,17 @@ export async function POST(request: Request) {
   if (!FORM_ID || !ENTRY) {
     return NextResponse.json(
       { ok: false, error: "The feedback form is not connected yet." },
+      { status: 503 },
+    );
+  }
+
+  if (!idsLookReal(FORM_ID, ENTRY)) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "The form id or the entry id in the environment is not a real one. Copy both from the form's own prefilled link.",
+      },
       { status: 503 },
     );
   }
@@ -101,14 +131,27 @@ export async function POST(request: Request) {
     const ok = response.status === 200 || response.status === 302;
 
     if (!ok) {
+      // Google answers a submission whose entry id matches no question
+      // with a 400, and a form that does not exist with a 404. Those are
+      // two different problems and the owner needs to know which one it
+      // is. The visitor gets a plain sentence; the `detail` field is
+      // there for whoever is setting the form up.
+      const friendly =
+        response.status === 400
+          ? "That did not go through. Email hello@rrrtx-systems.com instead."
+          : response.status === 404
+            ? "That form is not published yet. Email hello@rrrtx-systems.com instead."
+            : "That did not go through. Email hello@rrrtx-systems.com instead.";
+
+      const detail =
+        response.status === 400
+          ? `Google rejected the submission with a 400: the entry id "${ENTRY}" does not match any question in form ${FORM_ID}. Either the form has no questions yet, or NEXT_PUBLIC_GOOGLE_FORM_ENTRY is the wrong id. Copy the real one from the form's prefilled link.`
+          : response.status === 404
+            ? `Google has no form ${FORM_ID}. The form id is wrong, or the form has not been published with Send.`
+            : `Google responded ${response.status}.`;
+
       return NextResponse.json(
-        {
-          ok: false,
-          error:
-            response.status === 404
-              ? "That form is not published yet. Email hello@rrrtx-systems.com instead."
-              : "That did not go through. Email hello@rrrtx-systems.com instead.",
-        },
+        { ok: false, error: friendly, detail },
         { status: 502 },
       );
     }

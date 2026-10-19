@@ -19,7 +19,7 @@ const AvatarField = dynamic(() => import("./AvatarField"), {
   loading: () => null,
 });
 
-export default function Hero({ stars }: { stars: number }) {
+export default function Hero({ stars }: { stars: number | null }) {
   return (
     <section
       id="top"

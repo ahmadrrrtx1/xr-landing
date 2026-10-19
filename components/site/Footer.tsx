@@ -9,7 +9,7 @@ import { ownerTodos, site } from "@/lib/site";
  * as visible markers so nobody mistakes a missing page for a legal
  * document.
  */
-export default function Footer({ stars }: { stars: number }) {
+export default function Footer({ stars }: { stars: number | null }) {
   const year = new Date().getFullYear();
 
   return (
@@ -63,7 +63,7 @@ export default function Footer({ stars }: { stars: number }) {
                   rel="noopener noreferrer"
                   className="inline-flex min-h-11 items-center text-sm text-secondary hover:text-primary"
                 >
-                  GitHub — {stars} stars
+                  GitHub{stars === null ? "" : ` — ${stars} ${stars === 1 ? "star" : "stars"}`}
                 </a>
               </li>
               <li>

@@ -53,9 +53,24 @@ export default function Feedback() {
   const [state, setState] = useState<State>({ kind: "idle" });
   const honeypot = useRef<HTMLInputElement>(null);
 
-  const connected = Boolean(FORM_ID && ENTRY);
-  const embedOnly = Boolean(FORM_ID && !ENTRY);
-  const notConnected = !FORM_ID;
+  /**
+   * A published Google Form id starts with `1` and is a long token; an
+   * entry id is `entry.` followed by the question's number. A placeholder
+   * value looks real to every layer except the one that has to talk to
+   * Google, and Google answers a submission with an entry id that
+   * matches no question with a 400 — so a visitor would be thanked for
+   * an opinion that went nowhere. A value that does not look real is
+   * treated as "not connected", which is the truth.
+   */
+  const FORM_ID_RE = /^1[A-Za-z0-9_-]{20,}$/;
+  const ENTRY_RE = /^entry\.\d{5,}$/;
+
+  const realFormId = FORM_ID_RE.test(FORM_ID);
+  const realEntry = ENTRY_RE.test(ENTRY);
+
+  const connected = realFormId && realEntry;
+  const embedOnly = realFormId && !realEntry;
+  const notConnected = !realFormId;
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -87,6 +102,7 @@ export default function Feedback() {
       const result = (await response.json().catch(() => ({}))) as {
         ok?: boolean;
         error?: string;
+        detail?: string;
       };
 
       if (response.ok && result.ok) {
@@ -156,7 +172,8 @@ export default function Feedback() {
                   next?&rdquo;
                   <br />
                   2 — Menu &rsaquo; Get prefilled link, and copy the id out of the URL
-                  (it looks like <code className="font-mono">entry.123456789</code>)
+                  (it looks like <code className="font-mono">entry.123456789</code> — copy
+                  the real one, a made-up number is rejected)
                   <br />
                   3 — Set <code className="font-mono">NEXT_PUBLIC_GOOGLE_FORM_ID</code> and{" "}
                   <code className="font-mono">NEXT_PUBLIC_GOOGLE_FORM_ENTRY</code>

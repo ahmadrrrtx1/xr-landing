@@ -70,17 +70,24 @@ Click the menu (⋮) next to the Send button → **Get prefilled link**. You
 get a link that looks like this:
 
 ```
-https://docs.google.com/forms/d/e/1FAIpQLSc_EXAMPLE_REAL_ID/viewform?entry.123456789
+https://docs.google.com/forms/d/e/1FAIpQLSc_EXAMPLE_REAL_ID/viewform?entry.<the number from the prefilled link>
                                └── FORM ID ──┘             └── ENTRY ID ──┘
 ```
 
 - **`NEXT_PUBLIC_GOOGLE_FORM_ID`** = the part between `d/e/` and `/viewform`
-- **`NEXT_PUBLIC_GOOGLE_FORM_ENTRY`** = the `entry.123456789` at the end
+- **`NEXT_PUBLIC_GOOGLE_FORM_ENTRY`** = the `entry.<the number from the prefilled link>` at the end
 
 The entry id is the id of your *first question*. If you added the email
 question first and the "what should we build next" question second, use
 the id belonging to the paragraph question — it is the one whose id ends
 up in the prefilled link when that question is selected.
+
+> **Do not type the example.** A made-up entry id looks exactly like a
+> real one to every layer except the one that talks to Google, and
+> Google answers a submission with an entry id that matches no question
+> with a **400** — so the answer is silently thrown away. The site
+> reports that 400 precisely, and refuses to treat a malformed id as
+> configured, but it cannot invent the real one for you.
 
 ---
 
@@ -95,7 +102,7 @@ up in the prefilled link when that question is selected.
 | `TURSO_DATABASE_URL` | `libsql://<your-db>.turso.io` | **Already set — working.** From Turso → your database → the URL at the top. |
 | `TURSO_AUTH_TOKEN` | *(the token Turso gave you)* | **Already set — working.** Turso → **Tokens → Create API Token**. |
 | `NEXT_PUBLIC_GOOGLE_FORM_ID` | `<FORM ID from step 3>` | A public identifier. Not a secret. |
-| `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | `entry.123456789` | A public identifier. Not a secret. |
+| `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | `entry.<the number from the prefilled link>` | A public identifier. Not a secret. |
 
 **Then redeploy.** Vercel bakes environment variables into the deployment
 when it builds, so a deployment made before you added them will keep
@@ -194,6 +201,7 @@ that — and only because Google confirmed it.
 | "The form is not connected yet" on the page | `NEXT_PUBLIC_GOOGLE_FORM_ID` is not in the deployment | Add it, then **redeploy** — the old deployment cannot see it |
 | "That form is not published yet." | The form id is wrong, or the form was never published with **Send** | Copy the id out of the form's own link again; make sure the form is shared with "anyone with the link" |
 | Google returns 200 but the sheet is empty | The entry id does not match your question | Re-copy the prefilled link; the entry id must belong to the paragraph question |
+| The page says "That did not go through" and the sheet stays empty | The form has **no questions yet** — Google answers a submission with an entry id that matches no question with a 400 | Add the question in Google, press Send, then take the new entry id from the prefilled link and set it. Check the exact reason with `curl -s -X POST https://xr-landing-eight.vercel.app/api/feedback -H 'Content-Type: application/json' -d '{"answer":"a long enough test answer"}'` — the `detail` field names the problem exactly. |
 | "The waitlist database is not configured yet" | The two Turso variables are missing from the deployment | Add them and redeploy |
 | The signup says "could not save" but the page looks fine | The schema was never applied to the Turso database | Run `schema/001_waitlist.sql` against it |
 | The canonical tag still points at `xr-landing.vercel.app` | `NEXT_PUBLIC_SITE_URL` is not set, or the deployment predates it | Set it and redeploy |

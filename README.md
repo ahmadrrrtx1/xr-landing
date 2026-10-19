@@ -53,7 +53,7 @@ TURSO_AUTH_TOKEN=...
 
 # the feedback form — public identifiers, not secrets
 NEXT_PUBLIC_GOOGLE_FORM_ID=1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8
-NEXT_PUBLIC_GOOGLE_FORM_ENTRY=entry.123456789
+NEXT_PUBLIC_GOOGLE_FORM_ENTRY=entry.<the number from the prefilled link>
 ```
 
 The first two are the only ones that are needed for the site to function.
@@ -184,15 +184,15 @@ table — is in [`GOOGLE_FORM_SETUP.md`](./GOOGLE_FORM_SETUP.md).
 2. Click **Send** in the top right and publish it to the web, so the
    form is reachable without a Google login.
 3. Click the menu (⋮) → **Get prefilled link**. The link looks like
-   `https://docs.google.com/forms/d/e/<FORM_ID>/viewform?entry.123456789`
-   — the part after `d/e/` is the **form id**, the `entry.123456789` at
+   `https://docs.google.com/forms/d/e/<FORM_ID>/viewform?entry.<the number from the prefilled link>`
+   — the part after `d/e/` is the **form id**, the `entry.<the number from the prefilled link>` at
    the end is the **entry id**.
 4. Set the environment variables and redeploy:
 
    | Variable | Value | Effect |
    |---|---|---|
    | `NEXT_PUBLIC_GOOGLE_FORM_ID` | `<FORM_ID>` | **Required.** The site will not pretend to collect anything without it. |
-   | `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | `entry.123456789` | Optional, but it is the nicer version. |
+   | `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | `entry.<the number from the prefilled link>` | Optional, but it is the nicer version. |
 
    - With **both** set: the site renders its own form, in the site's own
      design, and posts the answer to Google through the server.

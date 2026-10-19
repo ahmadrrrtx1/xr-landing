@@ -8,13 +8,18 @@ import { site } from "@/lib/site";
  * revalidated hourly, so it is never a number someone typed. We do not
  * embed the third-party `gh-buttons` iframe: it is a third-party script
  * on a page that promises no third-party trackers.
+ *
+ * When the count is not known — the API is rate-limited, unreachable,
+ * or the token has expired — the button shows a dash. It does not show
+ * "0". A repository with six stars is not a repository with zero stars,
+ * and a page that says otherwise is simply wrong.
  */
 export default function GitHubStar({
   stars,
   className = "",
   variant = "default",
 }: {
-  stars: number;
+  stars: number | null;
   className?: string;
   variant?: "default" | "quiet";
 }) {
@@ -26,7 +31,11 @@ export default function GitHubStar({
       target="_blank"
       rel="noopener noreferrer"
       className={`${variant === "quiet" ? base : base} ${className}`}
-      aria-label={`Star ${site.name} on GitHub — ${stars} stars`}
+      aria-label={
+        stars === null
+          ? `Star ${site.name} on GitHub`
+          : `Star ${site.name} on GitHub — ${stars} ${stars === 1 ? "star" : "stars"}`
+      }
     >
       <svg
         aria-hidden="true"
@@ -40,7 +49,7 @@ export default function GitHubStar({
       </svg>
       <span>Star on GitHub</span>
       <span className="tabular-nums text-tertiary" aria-hidden="true">
-        {stars}
+        {stars === null ? "—" : stars}
       </span>
     </Link>
   );
