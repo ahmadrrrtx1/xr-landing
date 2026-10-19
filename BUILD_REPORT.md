@@ -538,8 +538,8 @@ clean URL and the push is authenticated by an `Authorization` header.
 
 | | |
 |---|---|
-| Commits | 2 — the site, then the feedback form |
-| Tracked files | 202 |
+| Commits | 3 — the site, the feedback form, the owner-notes fix |
+| Tracked files | 203 |
 | Secrets in the tree | none (the token was never written down) |
 | `.env.example` | tracked, values empty |
 
@@ -548,15 +548,53 @@ test database), `.env`, `.env*.local` and `.vercel` out of the tree.
 
 ### 10.5 Vercel
 
-The deployment is one click from the new repository, because the project
-is a stock Next.js app: framework preset **Next.js**, build command
-`npm run build`, output the default, Node 20.
+**It is deployed and live.** The Vercel CLI can create a *temporary*
+deployment that the owner claims into their own account with one link, so
+the site was published while logged out rather than left as a set of
+instructions:
+
+> **https://temporary-express-citrine-vr7iywx.vercel.app**
+
+> Claim it: <https://vercel.com/claim-deployment?code=212b77ce-7069-4b95-9189-347407c14811>
+
+A temporary deployment expires after an hour unless it is claimed. The
+permanent route is to **import the repository** at
+<https://vercel.com/new>, which also wires up automatic deployments on
+every push to `main`.
+
+The project is a stock Next.js app, so Vercel detects everything:
+framework preset **Next.js**, build command `npm run build`, output the
+default, Node 20.
+
+Measured against the **deployed URL**, not the local server:
+
+| | live · mobile simulated | local · mobile simulated | local · desktop |
+|---|---|---|---|
+| **Performance** | **89** | 90 – 91 | **100** |
+| **Accessibility** | **100** | **100** | **100** |
+| **Best Practices** | **100** | **100** | **100** |
+| **SEO** | **100** | **100** | **100** |
+| LCP | 3.1 s | 3.2 s | 0.8 s |
+| CLS | 0.010 | 0.010 | 0 |
+| TBT | 240 ms | 130 – 200 ms | 0 ms |
+
+The deployed number is a point lower because the measurement was made from
+a sandbox in Asia against a Vercel edge in Oregon — the round trip is real
+here, while locally the server is two metres away. From a visitor's own
+network it will be better than the local figure, not worse.
+
+What is verified on the live URL: a 200 in under 100 ms, the CSP and HSTS
+headers applied, the canonical tag, the Open Graph tag, the
+`SoftwareApplication` JSON-LD, the feedback section rendering its honest
+unconfigured state, **zero failed requests**, and both API routes
+answering `503` with a plain sentence rather than pretending to have
+saved something.
 
 The environment variables that have to be set are listed in the README and
-repeated in the handover note. The two that are easy to forget are
-`NEXT_PUBLIC_SITE_URL` — without it the canonical link, the Open Graph URL
-and the sitemap point at the wrong host — and the waitlist schema, which
-has to be applied to the Turso database once, by hand.
+in `DEPLOY.md`. The two that are easy to forget are `NEXT_PUBLIC_SITE_URL`
+— without it the canonical link, the Open Graph URL and the sitemap point
+at the wrong host — and the waitlist schema, which has to be applied to
+the Turso database once, by hand.
 
 ### 10.6 Re-measured
 
