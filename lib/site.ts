@@ -17,10 +17,15 @@ export const site = {
   description:
     "XR is a local-first, provider-neutral AI agent runtime. Give it a task: it plans, uses tools and changes real things on your machine — under a policy gate, your approval, a spend ceiling and a hash-chained log you can verify offline.",
 
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://xr-landing.vercel.app",
+  // The site's own address. NEXT_PUBLIC_SITE_URL is the single source of
+  // truth — it drives the canonical tag, the Open Graph URL, the Twitter
+  // card, the sitemap and the footer's link back to the site, so they
+  // can never disagree with each other or with where the site is
+  // actually served from.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://xr-landing-eight.vercel.app",
   repo: "https://github.com/ahmadrrrtx/xr",
   npm: "https://www.npmjs.com/package/@rrrtx/xr",
-  homepage: "https://xr-gules.vercel.app",
+  homepage: process.env.NEXT_PUBLIC_SITE_URL ?? "https://xr-landing-eight.vercel.app",
 
   agency: "https://rrrtx-systems.com",
   email: "hello@rrrtx-systems.com",

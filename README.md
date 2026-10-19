@@ -173,6 +173,9 @@ The form shell already exists, created in the owner's Drive:
 > **XR — what should we build next?**
 > <https://docs.google.com/forms/d/1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8/edit>
 
+The full kit — every file, every value, every step, and a troubleshooting
+table — is in [`GOOGLE_FORM_SETUP.md`](./GOOGLE_FORM_SETUP.md).
+
 ### Turning it on — two minutes, once
 
 1. Open the form above and add one question:
