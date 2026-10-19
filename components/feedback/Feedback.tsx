@@ -143,20 +143,25 @@ export default function Feedback() {
                 </a>
                 .
               </p>
-              <p className="mt-6 border-t border-[var(--color-line-subtle)] pt-4 text-xs leading-relaxed text-tertiary">
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-accent/80">
-                  Owner setup
-                </span>
-                <br />
-                1 — Create a Google Form with one question: &ldquo;What should XR do
-                next?&rdquo;
-                <br />
-                2 — Menu &rsaquo; Get prefilled link, and copy the id out of the URL
-                (it looks like <code className="font-mono">entry.123456789</code>)
-                <br />
-                3 — Set <code className="font-mono">NEXT_PUBLIC_GOOGLE_FORM_ID</code> and{" "}
-                <code className="font-mono">NEXT_PUBLIC_GOOGLE_FORM_ENTRY</code>
-              </p>
+              {/* The setup steps are for the owner, not for a visitor, so
+                  they only ever appear in a local development build. The
+                  instructions live in README.md. */}
+              {process.env.NODE_ENV === "development" ? (
+                <p className="mt-6 border-t border-[var(--color-line-subtle)] pt-4 text-xs leading-relaxed text-tertiary">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-accent/80">
+                    Owner setup
+                  </span>
+                  <br />
+                  1 — Create a Google Form with one question: &ldquo;What should XR do
+                  next?&rdquo;
+                  <br />
+                  2 — Menu &rsaquo; Get prefilled link, and copy the id out of the URL
+                  (it looks like <code className="font-mono">entry.123456789</code>)
+                  <br />
+                  3 — Set <code className="font-mono">NEXT_PUBLIC_GOOGLE_FORM_ID</code> and{" "}
+                  <code className="font-mono">NEXT_PUBLIC_GOOGLE_FORM_ENTRY</code>
+                </p>
+              ) : null}
             </div>
           ) : embedOnly ? (
             <div>

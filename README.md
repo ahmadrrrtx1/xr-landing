@@ -239,6 +239,10 @@ Google from the browser. `form-action` and `frame-src` name
 
 ## Deploying to Vercel
 
+The step-by-step version, with the exact settings, the environment
+variables, the waitlist schema and the feedback form, is in
+[`DEPLOY.md`](./DEPLOY.md). In short:
+
 1. `vercel link` (or import the repo at [vercel.com/new](https://vercel.com/new))
 2. Add the environment variables under **Settings → Environment Variables**:
    - `TURSO_DATABASE_URL` — `libsql://<your-db>.turso.io`
