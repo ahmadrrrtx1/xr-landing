@@ -75,10 +75,36 @@ export async function POST(request: Request) {
       );
     }
     return NextResponse.json(
-      { error: "The waitlist could not be reached. Please try again shortly." },
+      { error: describe(error) },
       { status: 503 },
     );
   }
+}
+
+/**
+ * Turn a database failure into something the owner can act on.
+ *
+ * "The waitlist could not be reached" tells nobody anything. These four
+ * sentences each name exactly one thing to check, and none of them
+ * repeats the database URL or the token — the error is read, never
+ * echoed.
+ */
+function describe(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+
+  if (/no such table/i.test(message)) {
+    return "The waitlist table does not exist yet. Run schema/001_waitlist.sql against the database, then try again.";
+  }
+  if (/auth|unauthor|jwt|token|forbidden/i.test(message)) {
+    return "The waitlist database rejected the credentials. Check TURSO_AUTH_TOKEN.";
+  }
+  if (/not found|unknown database|404/i.test(message)) {
+    return "The waitlist database was not found. Check TURSO_DATABASE_URL.";
+  }
+  if (/fetch failed|ENOTFOUND|EAI_AGAIN|ECONN|network|timeout|paused/i.test(message)) {
+    return "The waitlist database could not be reached. Check TURSO_DATABASE_URL and that the database is not paused.";
+  }
+  return "The waitlist could not be reached. Please try again shortly.";
 }
 
 /** Anything other than POST is a mistake; say so plainly. */
