@@ -5,6 +5,18 @@ itself, the two values you need from it, the files in this repository that
 make it work, the environment variables to paste into Vercel, and how to
 prove it works afterwards.
 
+> **Where things stand right now**
+>
+> | | |
+> |---|---|
+> | The site | **https://xr-landing-eight.vercel.app** — live |
+> | The waitlist | **working.** It writes real rows to Turso. |
+> | The feedback form | **not connected yet.** Two values are missing, and they can only come from the published form. |
+>
+> Everything in this document is about those last two values. The rest of
+> the site is done and verified — 23/23 acceptance checks pass against the
+> live URL.
+
 ---
 
 ## 1. The form — it already exists
@@ -80,8 +92,8 @@ up in the prefilled link when that question is selected.
 | Name | Value | Notes |
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | `https://xr-landing-eight.vercel.app` | **Set this one.** It drives the canonical tag, the Open Graph URL, the Twitter card, the sitemap and the footer's link back to the site. |
-| `TURSO_DATABASE_URL` | `libsql://<your-db>.turso.io` | From Turso → your database → the URL at the top. |
-| `TURSO_AUTH_TOKEN` | *(the token Turso gave you)* | Turso → **Tokens → Create API Token**. |
+| `TURSO_DATABASE_URL` | `libsql://<your-db>.turso.io` | **Already set — working.** From Turso → your database → the URL at the top. |
+| `TURSO_AUTH_TOKEN` | *(the token Turso gave you)* | **Already set — working.** Turso → **Tokens → Create API Token**. |
 | `NEXT_PUBLIC_GOOGLE_FORM_ID` | `<FORM ID from step 3>` | A public identifier. Not a secret. |
 | `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | `entry.123456789` | A public identifier. Not a secret. |
 
@@ -89,6 +101,12 @@ up in the prefilled link when that question is selected.
 when it builds, so a deployment made before you added them will keep
 answering "not configured" no matter what you do to the settings page.
 **Project → Deployments → ⋯ → Redeploy**, or push a commit.
+
+This is not hypothetical — it is exactly what happened with Turso. The
+variables were in the project, but the deployment that was serving had
+been built before they were added, so it kept answering "not configured"
+until the next deploy. If you add a variable and nothing changes, check
+the deployment, not the settings page.
 
 None of these five values is a credential for a service that can charge
 you money, send email, or read your database. The only one that grants

@@ -621,6 +621,19 @@ Two things were wrong on that deployment and are now recorded and fixed:
    are added cannot see them, so a redeploy is required. The variables
    and the schema are in `GOOGLE_FORM_SETUP.md`.
 
+   That is what happened here, and it is worth recording: the variables
+   *were* in the project, but the deployment serving the site had been
+   built before they were added, so it kept answering "not configured"
+   until the next deploy. Adding a variable to a Vercel project does
+   nothing to a deployment that is already running.
+
+   The route was also made self-diagnosing, because "the waitlist could
+   not be reached" names none of the four possible causes. It now reads
+   the database error and says which one it is — the table was never
+   created, the token was rejected, the database was not found, or the
+   host could not be contacted — without ever echoing the URL or the
+   token.
+
 Measured against the owner's own deployment:
 
 | | live · mobile simulated | local · mobile simulated | local · desktop |
@@ -633,14 +646,26 @@ Measured against the owner's own deployment:
 | CLS | 0.010 | 0.010 | 0 |
 | TBT | 130 ms | 130 – 200 ms | 0 ms |
 
-And the suites, run against that same live URL:
+And the suites, run against that same live URL, after Turso was in the
+deployment:
 
 ```
-22/23 acceptance checks passed
-  the one failure is the waitlist, because Turso is not in the
-  deployment's environment variables — the site says so plainly
+23/23 acceptance checks passed
 320 / 390 / 768 / 1280 / 1600 —  horizontal overflow 0 px,  failed requests 0
 ```
+
+The waitlist, exercised against the live deployment:
+
+| | |
+|---|---|
+| first signup | `{"status":"subscribed"}` — a real row in Turso |
+| the same address again | `{"status":"already-subscribed"}` — the primary key holds |
+| a malformed address | 400, nothing written |
+| the honeypot | 200, nothing written, the bot learns nothing |
+| `GET` instead of `POST` | 405, with `Allow: POST` |
+
+And from a browser, on the live site, the hero form answers **"You are on
+the list. We will email you once, when XR is ready."**
 
 ### 10.7 Re-measured
 
