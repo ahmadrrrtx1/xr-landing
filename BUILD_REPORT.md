@@ -863,3 +863,52 @@ in line with the real values.
 
 1. Paste the two values into Vercel and **redeploy** — 2 minutes.
 2. Re-link the response sheet from the form's **Responses** tab — 2 clicks.
+
+### 11.6 Re-measured after the follow-up
+
+The section changed in three ways: the reply field is now posted as
+`emailAddress`, it is optional in the browser but filled in server-side
+when it is blank, and the route's failure message names both possible
+causes of a 400.
+
+Against the **live site** (`https://xr-landing-eight.vercel.app`), after
+the push:
+
+```
+25/25 acceptance checks passed
+320 / 390 / 768 / 1280 / 1600 —  horizontal overflow 0 px
+```
+
+The live route, with the **wrong** entry id still in Vercel, answers
+exactly what is wrong and what to do about it:
+
+```
+POST /api/feedback
+-> 502
+{
+  "error":  "That did not go through. Email hello@rrrtx-systems.com instead.",
+  "detail": "Google rejected the submission with a 400. Two things can cause that:
+              the entry id "entry.123456789" does not match any question in form
+              1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ (either the
+              form has no questions yet, or NEXT_PUBLIC_GOOGLE_FORM_ENTRY is the
+              wrong id — copy the real one from the form's prefilled link), or the
+              form collects email addresses and the submission carried none."
+}
+```
+
+Nothing else changed on the site: the star count still reads **6** from the
+live GitHub API, the waitlist still writes real Turso rows, and the
+honeypot still returns `200` without writing anything.
+
+With the **correct** entry id in a local build, both paths were driven
+end-to-end in a real browser:
+
+| Path | Result |
+|---|---|
+| **JavaScript on**, answer, no reply address | `"That is with us. Thank you."` — the no-reply fallback, accepted by Google |
+| **JavaScript off** — the form posts straight to Google | HTTP **200**, Google’s page: **"Your response has been recorded"** |
+| The reply field in the markup | `name="emailAddress"`, `required` removed on mount, label reads *"Email (optional — only if you want a reply)"* |
+| Mobile, 390 × 844 | horizontal overflow **0 px** |
+
+The no-JavaScript path matters: it is the one that proves the entry id is
+on the wire, because there is no server in the loop to correct it.
