@@ -52,8 +52,8 @@ TURSO_DATABASE_URL=libsql://your-db-name-your-org.turso.io
 TURSO_AUTH_TOKEN=...
 
 # the feedback form — public identifiers, not secrets
-NEXT_PUBLIC_GOOGLE_FORM_ID=1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8
-NEXT_PUBLIC_GOOGLE_FORM_ENTRY=entry.<the number from the prefilled link>
+NEXT_PUBLIC_GOOGLE_FORM_ID=1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ
+NEXT_PUBLIC_GOOGLE_FORM_ENTRY=entry.1759014004
 ```
 
 The first two are the only ones that are needed for the site to function.
@@ -168,13 +168,15 @@ A section on the page where somebody can say what XR should do next, and
 say what they think of it. The answers land in a **Google Form**, so they
 land in the owner's own Google Sheet.
 
-The form shell already exists, created in the owner's Drive:
+The form already exists, is published, and has two questions — an email
+field and *"what should we build in XR?"*:
 
 > **XR — what should we build next?**
-> <https://docs.google.com/forms/d/1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8/edit>
+> <https://docs.google.com/forms/d/e/1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ/edit>
 
-The full kit — every file, every value, every step, and a troubleshooting
-table — is in [`GOOGLE_FORM_SETUP.md`](./GOOGLE_FORM_SETUP.md).
+The full kit — every file, every value, every click, a fork guide and a
+troubleshooting table — is in
+[`GOOGLE_FORM_SETUP.md`](./GOOGLE_FORM_SETUP.md).
 
 ### Turning it on — two minutes, once
 
@@ -206,6 +208,20 @@ table — is in [`GOOGLE_FORM_SETUP.md`](./GOOGLE_FORM_SETUP.md).
    These are public identifiers, not secrets — they appear in the page
    source. There is no API key, no service account and no OAuth in this
    path.
+
+### The values for this form
+
+| Variable | Value |
+|---|---|
+| `NEXT_PUBLIC_GOOGLE_FORM_ID` | `1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ` |
+| `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | `entry.1759014004` |
+
+The form's first question is the built-in **"collect email addresses"**
+setting, so it is posted to Google as `emailAddress`, not as an
+`entry.…` id — and Google answers a response with an empty address with a
+**400**. The site therefore sends `no-reply@rrrtx-systems.com` when the
+visitor leaves the reply field blank, so the answer is still recorded and
+it is obvious later that nobody could be written back to.
 
 ### How the answer travels
 

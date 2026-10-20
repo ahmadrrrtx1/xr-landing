@@ -421,18 +421,35 @@ an email address, not a false thank-you.
 
 ### The Google Form itself
 
-The form shell was created in the owner's Drive through the Google Drive
-API:
+The owner published their own form, with two questions:
 
 - Name: **XR — what should we build next?**
-- id: `1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8`
-- <https://docs.google.com/forms/d/1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8/edit>
+- Form id: `1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ`
+- <https://docs.google.com/forms/d/e/1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ/edit>
+- Q1 **Email** — the built-in *"collect email addresses"* setting
+- Q2 **"what should we build in XR?"** — entry id `entry.1759014004`
 
 The Forms API is not reachable from the tooling available here (the Drive
-connector exposes no `forms.batchUpdate`), so **adding the one question and
-publishing the form is a two-minute manual step**, written out in
-`README.md` § "The feedback form". The site is built to work the moment it
-is done, and to be honest about not being done.
+connector exposes no `forms.batchUpdate`), so the questions were added and
+the form published by hand. The **entry id was measured, not guessed**: a
+real submission was intercepted and the POST body read, which gave
+`entry.1759014004` and the `emailAddress` field.
+
+### What that shape means for the code
+
+| Form feature | How Google receives it | What the site sends |
+|---|---|---|
+| Built-in email collection | `emailAddress` (never `entry.…`) | the visitor's address, or `no-reply@rrrtx-systems.com` when it is blank |
+| The question | `entry.1759014004` | `Area: <topic>\n\n<the answer>` |
+| Sign-in | not required — an anonymous submission succeeds | nothing to send |
+
+Google answers a response with an **empty** `emailAddress` with a **400**,
+not with a blank cell. That is why the site fills in a no-reply address
+rather than sending an empty field: the answer is recorded either way, and
+the sheet makes it obvious afterwards that nobody could be written back to.
+
+The two ids are public identifiers. They appear in the page source. There
+is no API key, no service account and no OAuth anywhere in this path.
 
 | State | What the visitor sees |
 |---|---|
@@ -440,3 +457,21 @@ is done, and to be honest about not being done.
 | Form id only | Google's own form, embedded, exactly as Google renders it |
 | Neither | "The form is not connected yet" + `hello@rrrtx-systems.com` |
 | Google returns 404 | "That form is not published yet. Email hello@rrrtx-systems.com instead." |
+| Google returns 400 | "That did not go through. Email hello@rrrtx-systems.com instead." — and the `detail` field names the two real causes: an entry id that matches no question, or a form that collects addresses and was sent none |
+
+### The response sheet
+
+Responses are mirrored into the form's own Google Sheet, **"XR — what
+should we build next? (Responses)"**. The sheet is not read by the site and
+is not tied to the waitlist; it belongs to the owner.
+
+> **Recorded, not hidden.** During the Act 5 cleanup a test row was removed
+> from that sheet with a direct content write. That write detached the
+> form from the sheet: the form kept recording every response (Google
+> answers "Your response has been recorded"), but the sheet stopped
+> receiving them. Nothing was lost — Google Forms keeps every response and
+> the **Responses** tab shows them — and the fix is two clicks:
+> **form → Responses tab → green Google Sheets icon → Create a new
+> spreadsheet**, which writes every response collected so far into a fresh
+> sheet. `GOOGLE_FORM_SETUP.md` §5 has the walkthrough. The site itself was
+> never at fault: its POST reaches Google and Google confirms it.

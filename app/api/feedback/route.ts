@@ -40,6 +40,9 @@ const ENTRY = process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY ?? "";
 const FORM_ID_RE = /^1[A-Za-z0-9_-]{20,}$/;
 const ENTRY_RE = /^entry\.\d{5,}$/;
 
+/** The address recorded when a visitor leaves the reply field empty. */
+export const NO_REPLY_ADDRESS = "no-reply@rrrtx-systems.com";
+
 export const idsLookReal = (formId: string, entry: string) =>
   FORM_ID_RE.test(formId) && ENTRY_RE.test(entry);
 
@@ -107,12 +110,17 @@ export async function POST(request: Request) {
     );
   }
 
-  const composed = [
-    `Area: ${area || "Not given"}`,
-    `Reply to: ${email || "(not given)"}`,
-    "",
-    answer,
-  ].join("\n");
+  const composed = [`Area: ${area || "Not given"}`, "", answer].join("\n");
+
+  // The form collects email addresses, so Google wants one on every
+  // response: an empty `emailAddress` is a 400, not a blank cell. When
+  // the visitor leaves the address blank the answer is still recorded,
+  // against a no-reply address on the owner's own domain that says
+  // plainly that nobody is going to be able to answer it.
+  const payload: Record<string, string> = {
+    [ENTRY]: composed,
+    emailAddress: email || NO_REPLY_ADDRESS,
+  };
 
   try {
     const response = await fetch(
@@ -120,7 +128,7 @@ export async function POST(request: Request) {
       {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-        body: new URLSearchParams({ [ENTRY]: composed }).toString(),
+        body: new URLSearchParams(payload).toString(),
         // Google answers a good submission with a redirect; following it
         // would hide a 404 behind a 200 "nothing here" page.
         redirect: "manual",
@@ -145,7 +153,7 @@ export async function POST(request: Request) {
 
       const detail =
         response.status === 400
-          ? `Google rejected the submission with a 400: the entry id "${ENTRY}" does not match any question in form ${FORM_ID}. Either the form has no questions yet, or NEXT_PUBLIC_GOOGLE_FORM_ENTRY is the wrong id. Copy the real one from the form's prefilled link.`
+          ? `Google rejected the submission with a 400. Two things can cause that: the entry id "${ENTRY}" does not match any question in form ${FORM_ID} (either the form has no questions yet, or NEXT_PUBLIC_GOOGLE_FORM_ENTRY is the wrong id — copy the real one from the form's prefilled link), or the form collects email addresses and the submission carried none.`
           : response.status === 404
             ? `Google has no form ${FORM_ID}. The form id is wrong, or the form has not been published with Send.`
             : `Google responded ${response.status}.`;

@@ -48,8 +48,8 @@ Every later `git push` to `main` redeploys automatically.
 | `TURSO_DATABASE_URL` | for the waitlist | `libsql://your-db.turso.io` | [turso.tech](https://turso.tech) → create a database → copy the URL |
 | `TURSO_AUTH_TOKEN` | for the waitlist | the token for that database | the same page, **Tokens → Create API token** |
 | `NEXT_PUBLIC_SITE_URL` | **yes** | the public URL of the site, e.g. `https://xr-landing.vercel.app` | the URL Vercel gives the project |
-| `NEXT_PUBLIC_GOOGLE_FORM_ID` | for the feedback form | the id in the form's own link | see below |
-| `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | optional | e.g. `entry.<the number from the prefilled link>` | see below |
+| `NEXT_PUBLIC_GOOGLE_FORM_ID` | for the feedback form | the id in the form's own link | `1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ` |
+| `NEXT_PUBLIC_GOOGLE_FORM_ENTRY` | for the feedback form | e.g. `entry.1759014004` | `entry.1759014004` |
 
 **`NEXT_PUBLIC_SITE_URL` is the one that bites.** Without it the canonical
 link, the Open Graph URL, the Twitter card and the sitemap all point at
@@ -70,6 +70,12 @@ If you set both, the site renders its own form in its own design. If you
 set neither, the section says the form is not connected yet and offers
 `hello@rrrtx-systems.com` — it never pretends to have collected
 something.
+
+**Set both, then redeploy.** Vercel bakes environment variables into the
+deployment when it builds, so a deployment made before the variables were
+added keeps answering "not connected" no matter what the settings page
+says. **Project → Deployments → ⋮ on the latest deployment → Redeploy.**
+The full click-by-click version is in [`GOOGLE_FORM_SETUP.md`](./GOOGLE_FORM_SETUP.md).
 
 ---
 
@@ -102,25 +108,31 @@ the right environment and redeploy.
 
 ## 4. The feedback form — one question, then publish
 
-The form already exists in your Google Drive:
+The form already exists, is published, and has two questions — the built-in
+email field and **"what should we build in XR?"**:
 
 > **XR — what should we build next?**
-> <https://docs.google.com/forms/d/1vN0I_PtIQDCemoAgafAQwdMG5Hsm5c5eZlJaVbr3vu8/edit>
+> <https://docs.google.com/forms/d/e/1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ/edit>
 
-1. Open it and add one question: **"What should XR do next?"**
-   (a paragraph question). Optionally a second short-answer question for
-   the reply address.
-2. Press **Send** in the top right and publish it to the web, so it is
-   reachable without a Google login.
-3. Press the menu (⋮) → **Get prefilled link**. The link looks like
-   `https://docs.google.com/forms/d/e/<FORM_ID>/viewform?entry.<the number from the prefilled link>`
-   — the part after `d/e/` is the **form id**, the `entry.<the number from the prefilled link>` at
-   the end is the **entry id**.
-4. Put those two values into the Vercel environment variables and
-   redeploy.
+1. The **form id** is the part between `d/e/` and `/viewform` in the form’s
+   own link:
+   `1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ`
+2. The **entry id** is the id of the question. Press the menu (⋯) →
+   **Get prefilled link** with that question selected; the link ends with
+   `?entry.1759014004`.
+3. Put both into the Vercel environment variables and redeploy.
 
-Responses then land in the Google Sheet that is attached to the form, in
-the Responses tab.
+> The email question is the built-in **"collect email addresses"**
+> setting, so it is posted as `emailAddress`, not as an `entry.…` id —
+> and Google answers a response with an empty address with a **400**.
+> The site sends a no-reply address on your domain when the visitor
+> leaves the field blank, so the answer is still recorded.
+
+Responses land in the Google Sheet that is attached to the form. If the
+sheet ever stops receiving them, re-link it from the form’s
+**Responses** tab → green Google Sheets icon → **Create a new
+spreadsheet**; the full walkthrough is in
+[`GOOGLE_FORM_SETUP.md`](./GOOGLE_FORM_SETUP.md) §5.
 
 ---
 

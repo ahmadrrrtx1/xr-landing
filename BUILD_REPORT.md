@@ -760,3 +760,106 @@ link into it, and — in the unconfigured state — that it says the form is
 not connected and offers an email address. When the form *is* configured
 the same checks assert the free-text box, the topic choices, the optional
 reply address and the `aria-live` status region.
+
+
+---
+
+## 11. Act 5 follow-up — the real entry id, and the email the form insists on
+
+The owner had added the two questions to the form, published it, uploaded
+a screenshot of the editor, and asked three things: **where exactly do I
+get the entry id**, **what do I configure in Vercel**, and **a fork** of the
+setup they can carry to another project.
+
+### 11.1 The entry id, measured instead of guessed
+
+The documentation had been saying `entry.<the number from the prefilled
+link>` since the Act 5 copy-paste accident — a placeholder that is
+*shaped* exactly like a real id, which is why it survived into a live
+deployment and why every answer was silently dropped.
+
+There is no Forms API in the tooling here, and `curl` of the public form
+returns a Java-less shell with no `entry.` ids in it at all (the data
+lives inside `FB_PUBLIC_LOAD_DATA_`, which the bot-served HTML does not
+carry). So the id was **measured**: a real submission was made in a real
+browser and the POST body was intercepted.
+
+```
+entry.1759014004=A+real+answer...&emailAddress=probe-visitor%40example.com
+```
+
+That single request settled three questions at once:
+
+| Question | Answer | How it was proved |
+|---|---|---|
+| The entry id of "what should we build in XR?" | **`entry.1759014004`** | read out of the submitted POST body |
+| How the email question is sent | **`emailAddress`** — *not* an `entry.` id, because Q1 is the built-in *"collect email addresses"* setting | same POST body |
+| Does the form need a Google sign-in? | **No.** An anonymous browser submission succeeds and shows *"Your response has been recorded."* | same submission |
+
+### 11.2 The 400 that an empty address causes
+
+Google was measured against three payloads:
+
+| Payload | Answer |
+|---|---|
+| correct entry id + a valid address | **200** — *"Your response has been recorded"* |
+| correct entry id + **empty** `emailAddress` | **400** |
+| wrong entry id + a valid address | **400** |
+| unknown form id | **404** |
+
+So a form that collects email addresses cannot accept a response with a
+blank address — not as a blank cell, as a **400**. The site now sends
+`emailAddress: email || "no-reply@rrrtx-systems.com"`: the answer is
+recorded either way, and the sheet shows later that nobody could be
+written back to. The `detail` field on a 400 now names both causes
+(wrong entry id, or no address) instead of one.
+
+The form's own markup marks the address `required` so that the
+no-JavaScript path still works, and a `useEffect` lifts that requirement
+as soon as the page takes over — JavaScript visitors may leave it blank.
+
+### 11.3 The sheet, and a mistake worth recording
+
+While clearing the probe rows out of the response sheet, the sheet's
+content was rewritten through the Drive connector. **That write detached
+the form from its sheet.** The form kept working — Google answers every
+submission with *"Your response has been recorded"* — but the spreadsheet
+stopped receiving them, and the file's version and `modifiedTime` stopped
+moving, which is how it was caught: not by the UI, but by reading the
+file's own metadata instead of its export.
+
+Nothing was lost. Google Forms keeps every response it accepts, and the
+form's **Responses** tab shows them. The repair is two clicks — **Responses
+tab → green Google Sheets icon → Create a new spreadsheet** — which
+writes every response collected so far into a fresh sheet.
+`GOOGLE_FORM_SETUP.md` §5 carries the walkthrough.
+
+The rule that came out of it: **never write to a form's response sheet.**
+Read it, export it, but do not rewrite it — the sheet is a live view the
+form holds a handle on, and a content write breaks that handle in a way
+that fails silently.
+
+### 11.4 The two values the owner has to paste
+
+```
+NEXT_PUBLIC_GOOGLE_FORM_ID    = 1FAIpQLSdbDshtNhiBwfuGjlMRM44sH0ESH-p_iaXBVsDuQT8ScEi-uQ
+NEXT_PUBLIC_GOOGLE_FORM_ENTRY  = entry.1759014004
+```
+
+`GOOGLE_FORM_SETUP.md` was rewritten around them: the two values with a
+ready-to-copy table, **two independent methods for reading the entry id**
+(the prefilled link, and the intercepted POST), a section on what the
+form's shape means for the code, the **click-by-click Vercel path**
+(Settings → Environment Variables → Add → Save → Deployments → ⋮ →
+Redeploy, with the reason the redeploy is not optional), a **fork guide**
+(two files, two variables, one mount line, the three CSP directives, and
+which copy to change), and a symptom → fix table that now includes the
+empty-sheet case.
+
+`README.md`, `DEPLOY.md`, `.env.example` and `CLAIMS.md` §10 were brought
+in line with the real values.
+
+### 11.5 What the owner still has to do
+
+1. Paste the two values into Vercel and **redeploy** — 2 minutes.
+2. Re-link the response sheet from the form's **Responses** tab — 2 clicks.

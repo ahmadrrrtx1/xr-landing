@@ -25,7 +25,7 @@
  * secrets and there is no API key anywhere in this path.
  */
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { site } from "@/lib/site";
 
 const FORM_ID = process.env.NEXT_PUBLIC_GOOGLE_FORM_ID ?? "";
@@ -52,6 +52,15 @@ export default function Feedback() {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<State>({ kind: "idle" });
   const honeypot = useRef<HTMLInputElement>(null);
+
+  // With JavaScript the address is optional, because the server fills in
+  // a no-reply address when it is left blank. Without JavaScript the
+  // browser posts the form to Google directly, and Google rejects a
+  // response with no address at all — so the markup marks the field
+  // required, and this removes the requirement once we can take over.
+  useEffect(() => {
+    document.getElementById("feedback-email")?.removeAttribute("required");
+  }, []);
 
   /**
    * A published Google Form id starts with `1` and is a long token; an
@@ -134,8 +143,9 @@ export default function Feedback() {
             would put first, and what you would rip out.
           </p>
           <p className="mt-4 text-[15px] leading-[1.7] text-secondary sm:text-base">
-            The address below is optional. Leave it and we cannot reply; leave it in and we
-            will, once.
+            The address below is optional. Leave it and we cannot reply — the answer still
+            counts, and it is recorded against a no-reply address so we know not to write
+            back. Leave it in and we will, once.
           </p>
           <p className="mt-6 text-[13px] leading-relaxed text-tertiary">
             This form posts straight to a Google Form. Google stores what you type; we do not
@@ -278,12 +288,13 @@ export default function Feedback() {
               </label>
               <input
                 id="feedback-email"
-                name="email"
+                name="emailAddress"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 maxLength={254}
                 autoComplete="email"
+                required
                 placeholder="you@company.com"
                 className="mt-2 h-12 w-full rounded-xl border border-[var(--color-line)] bg-ink/80 px-4 text-[15px] text-primary outline-none transition placeholder:text-tertiary focus:border-[var(--color-line-accent)]"
               />
